@@ -11,6 +11,8 @@
 		F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB72A73CB0300F354F9 /* ContentView.swift */; };
 		F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */; };
 		F3C3AEBD2A73CB0400F354F9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEBC2A73CB0400F354F9 /* Preview Assets.xcassets */; };
+		F3C3AEE02A73D89900F354F9 /* ARScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */; };
+		F3FE9E052A7B0DD6003A171C /* empty.usdz in Resources */ = {isa = PBXBuildFile; fileRef = F3FE9E042A7B0DD6003A171C /* empty.usdz */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		F3C3AEB72A73CB0300F354F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3C3AEBC2A73CB0400F354F9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = ARScene.rcproject; sourceTree = "<group>"; };
+		F3FE9E042A7B0DD6003A171C /* empty.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = empty.usdz; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +57,10 @@
 			children = (
 				F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */,
 				F3C3AEB72A73CB0300F354F9 /* ContentView.swift */,
+				F3FE9E042A7B0DD6003A171C /* empty.usdz */,
 				F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */,
 				F3C3AEBB2A73CB0400F354F9 /* Preview Content */,
+				F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */,
 			);
 			path = ARCamRecord;
 			sourceTree = "<group>";
@@ -126,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3C3AEBD2A73CB0400F354F9 /* Preview Assets.xcassets in Resources */,
+				F3FE9E052A7B0DD6003A171C /* empty.usdz in Resources */,
 				F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */,
+				F3C3AEE02A73D89900F354F9 /* ARScene.rcproject in Sources */,
 				F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,6 +278,7 @@
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna shooting AR porn";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +308,7 @@
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna shooting AR porn";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
