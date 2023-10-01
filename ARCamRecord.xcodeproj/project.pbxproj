@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EC40F662AC31BA4000C94E9 /* SCNScene.usda.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F652AC31BA4000C94E9 /* SCNScene.usda.extension.swift */; };
+		5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */; };
+		5EC40F6E2AC9B9FA000C94E9 /* CrosshairButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */; };
+		5EC40F712AC9BA56000C94E9 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F702AC9BA56000C94E9 /* ControlsView.swift */; };
+		5EC40F732AC9BAA3000C94E9 /* RecordButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F722AC9BAA3000C94E9 /* RecordButtonView.swift */; };
+		5EC40F752AC9BAED000C94E9 /* AddAnchorButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F742AC9BAED000C94E9 /* AddAnchorButtonView.swift */; };
+		5EC40F772AC9BBC0000C94E9 /* HorizonControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F762AC9BBC0000C94E9 /* HorizonControlView.swift */; };
+		5EC40F792AC9BCBE000C94E9 /* LabelledDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F782AC9BCBE000C94E9 /* LabelledDivider.swift */; };
+		5EC40F7B2AC9DB4B000C94E9 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F7A2AC9DB4B000C94E9 /* MotionManager.swift */; };
+		5ECB90002ABFB42000F9DF4D /* ARManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */; };
+		5ECB90032ABFB55200F9DF4D /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB90022ABFB55200F9DF4D /* ARViewContainer.swift */; };
 		F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */; };
 		F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB72A73CB0300F354F9 /* ContentView.swift */; };
 		F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */; };
@@ -16,6 +27,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5EC40F652AC31BA4000C94E9 /* SCNScene.usda.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.usda.extension.swift; sourceTree = "<group>"; };
+		5EC40F672AC8331C000C94E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
+		5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosshairButtonView.swift; sourceTree = "<group>"; };
+		5EC40F702AC9BA56000C94E9 /* ControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
+		5EC40F722AC9BAA3000C94E9 /* RecordButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButtonView.swift; sourceTree = "<group>"; };
+		5EC40F742AC9BAED000C94E9 /* AddAnchorButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnchorButtonView.swift; sourceTree = "<group>"; };
+		5EC40F762AC9BBC0000C94E9 /* HorizonControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizonControlView.swift; sourceTree = "<group>"; };
+		5EC40F782AC9BCBE000C94E9 /* LabelledDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledDivider.swift; sourceTree = "<group>"; };
+		5EC40F7A2AC9DB4B000C94E9 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARManager.swift; sourceTree = "<group>"; };
+		5ECB90022ABFB55200F9DF4D /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
 		F3C3AEB22A73CB0300F354F9 /* ARCamRecord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARCamRecord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCamRecordApp.swift; sourceTree = "<group>"; };
 		F3C3AEB72A73CB0300F354F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -36,6 +59,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5EC40F642AC31B7E000C94E9 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				5EC40F652AC31BA4000C94E9 /* SCNScene.usda.extension.swift */,
+				5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		5EC40F6C2AC9B99F000C94E9 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */,
+				5EC40F702AC9BA56000C94E9 /* ControlsView.swift */,
+				5EC40F722AC9BAA3000C94E9 /* RecordButtonView.swift */,
+				5EC40F742AC9BAED000C94E9 /* AddAnchorButtonView.swift */,
+				5EC40F762AC9BBC0000C94E9 /* HorizonControlView.swift */,
+				5EC40F782AC9BCBE000C94E9 /* LabelledDivider.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		5ECB8FFE2ABFB40100F9DF4D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */,
+				5EC40F7A2AC9DB4B000C94E9 /* MotionManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5ECB90012ABFB53600F9DF4D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5EC40F6C2AC9B99F000C94E9 /* Components */,
+				F3C3AEB72A73CB0300F354F9 /* ContentView.swift */,
+				5ECB90022ABFB55200F9DF4D /* ARViewContainer.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F3C3AEA92A73CB0300F354F9 = {
 			isa = PBXGroup;
 			children = (
@@ -55,8 +119,11 @@
 		F3C3AEB42A73CB0300F354F9 /* ARCamRecord */ = {
 			isa = PBXGroup;
 			children = (
+				5EC40F672AC8331C000C94E9 /* Info.plist */,
+				5EC40F642AC31B7E000C94E9 /* utils */,
+				5ECB8FFE2ABFB40100F9DF4D /* Models */,
 				F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */,
-				F3C3AEB72A73CB0300F354F9 /* ContentView.swift */,
+				5ECB90012ABFB53600F9DF4D /* Views */,
 				F3FE9E042A7B0DD6003A171C /* empty.usdz */,
 				F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */,
 				F3C3AEBB2A73CB0400F354F9 /* Preview Content */,
@@ -101,7 +168,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					F3C3AEB12A73CB0300F354F9 = {
 						CreatedOnToolsVersion = 14.1;
@@ -144,9 +211,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */,
+				5EC40F7B2AC9DB4B000C94E9 /* MotionManager.swift in Sources */,
+				5EC40F712AC9BA56000C94E9 /* ControlsView.swift in Sources */,
+				5EC40F6E2AC9B9FA000C94E9 /* CrosshairButtonView.swift in Sources */,
+				5EC40F752AC9BAED000C94E9 /* AddAnchorButtonView.swift in Sources */,
+				5EC40F792AC9BCBE000C94E9 /* LabelledDivider.swift in Sources */,
+				5ECB90002ABFB42000F9DF4D /* ARManager.swift in Sources */,
 				F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */,
 				F3C3AEE02A73D89900F354F9 /* ARScene.rcproject in Sources */,
 				F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */,
+				5EC40F772AC9BBC0000C94E9 /* HorizonControlView.swift in Sources */,
+				5EC40F662AC31BA4000C94E9 /* SCNScene.usda.extension.swift in Sources */,
+				5ECB90032ABFB55200F9DF4D /* ARViewContainer.swift in Sources */,
+				5EC40F732AC9BAA3000C94E9 /* RecordButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +267,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -249,6 +328,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -278,12 +358,16 @@
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna shooting AR porn";
+				INFOPLIST_FILE = ARCamRecord/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna filming AR porn";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porn should be with the sound, even AR";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -308,12 +392,16 @@
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna shooting AR porn";
+				INFOPLIST_FILE = ARCamRecord/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna filming AR porn";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porn should be with the sound, even AR";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
