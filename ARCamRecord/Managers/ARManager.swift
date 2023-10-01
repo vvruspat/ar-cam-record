@@ -49,7 +49,6 @@ class ARManager: NSObject, ObservableObject {
 
         arView.session.delegate = self
         
-        // 2: Add camera node
         let cameraNode = SCNNode()
         
         cameraNode.camera = SCNCamera()
@@ -119,6 +118,7 @@ class ARManager: NSObject, ObservableObject {
             let node = SCNNode();
             
             node.position = SCNVector3(element.position)
+            node.transform = SCNMatrix4(element.transform.matrix)
             node.name = "Anchor\(sceneToSave.rootNode.childNodes.count)"
             
             node.geometry = SCNSphere(radius: 8)
