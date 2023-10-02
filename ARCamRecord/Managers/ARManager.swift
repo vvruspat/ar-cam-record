@@ -10,10 +10,11 @@ import SceneKit
 import ARKit
 
 class ARManager: NSObject, ObservableObject {
+    var planes = [UUID: PlaneAnchorEntity]()
+
     static let shared = ARManager()
     
     let arView: ARView
-    let scene = SCNScene(named: "empty.usdz")
     let sceneToSave = SCNScene()
     var cameraTransforms: Array<float4x4> = []
     
@@ -38,7 +39,6 @@ class ARManager: NSObject, ObservableObject {
             
         if let hiResFormat = ARWorldTrackingConfiguration.recommendedVideoFormatFor4KResolution {
             config.videoFormat = hiResFormat
-            print("Hires available")
         }
         
         config.planeDetection = [.horizontal, .vertical]
@@ -48,22 +48,6 @@ class ARManager: NSObject, ObservableObject {
         fps = Float(config.videoFormat.framesPerSecond)
 
         arView.session.delegate = self
-        
-        let cameraNode = SCNNode()
-        
-        cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3(x: 0, y: 10, z: 35)
-        cameraNode.camera!.name = "iPhoneCamera"
-        cameraNode.name = "CameraNode"
-        
-        sceneToSave.rootNode.addChildNode(cameraNode)
-
-        if scene != nil {
-            scene!.rootNode.addChildNode(cameraNode)
-        } else {
-            print("Scene is nil")
-        }
-        
     }
     
     func record () async {
@@ -135,7 +119,7 @@ class ARManager: NSObject, ObservableObject {
             cameraNode.camera = SCNCamera()
             cameraNode.camera!.name = "iPhoneCamera"
             cameraNode.name = "CameraNode"
-            cameraNode.position = SCNVector3(x: 0, y: 10, z: 35)
+            cameraNode.position = SCNVector3(x: 0, y: 0, z: 0)
             
             sceneToSave.rootNode.addChildNode(cameraNode)
             
@@ -152,13 +136,10 @@ class ARManager: NSObject, ObservableObject {
     }
     
     func addAnchor() {
-        do {
-            let anchor = try ARScene.loadBox()
-            
+        if let anchor = try? ARScene.loadBox() {
+//            if let anchor = try? Entity.loadAnchor(named: "axis") {
             arView.scene.anchors.append(anchor)
             print("anchor added \(anchor.position)")
-        } catch {
-            print("Failed to load Box \(error.localizedDescription)")
         }
     }
     
@@ -174,4 +155,21 @@ extension ARManager : ARSessionDelegate {
             videoWriter?.submit(pixelBuffer: frame.capturedImage)
         }
     }
+    
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+        anchors.forEach { anchor in
+            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+                print("didAdd plane")
+                let id = arPlaneAnchor.identifier
+                if planes.contains(where: {$0.key == id}) {
+                    print("anchor already exists")
+                } else {
+                    let planeAnchorEntity = PlaneAnchorEntity(arPlaneAnchor: arPlaneAnchor)
+                    arView.scene.anchors.append(planeAnchorEntity)
+                    planes[id] = planeAnchorEntity
+                }
+            }
+        }
+    }
+
 }
