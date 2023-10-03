@@ -13,12 +13,13 @@ extension SCNNode {
         let nodeAnimation = animation[self.name ?? ""] ?? [:]
         var isTranformAnimated = false
         
-        nodeAnimation.forEach { key, value in
-            if (key == "transform") {
-                isTranformAnimated = true
+        for key in nodeAnimation.keys {
+            if let value = nodeAnimation[key] {
+                if (key == "transform") {
+                    isTranformAnimated = true
+                }
+                usdaNode += "\t " + UsdaUtils.getAnimatedAttribute(attrName: key, attrValue: value) + "\n"
             }
-                
-            usdaNode += "\t " + UsdaUtils.getAnimatedAttribute(attrName: key, attrValue: value) + "\n"
         }
         
         if (!isTranformAnimated) {

@@ -150,6 +150,10 @@ class ARManager: NSObject, ObservableObject {
             
             sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
             
+            if let path = getPathToSave("\(self.filename)_test.usda") {
+                sceneToSave.write(to: path, delegate: nil)
+            }
+            
             openDirectory()
         }
     }
