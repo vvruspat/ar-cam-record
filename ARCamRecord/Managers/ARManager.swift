@@ -8,6 +8,7 @@
 import RealityKit
 import SceneKit
 import ARKit
+import CoreVideo
 
 class ARManager: NSObject, ObservableObject {
     var planes = [UUID: PlaneAnchorEntity]()
@@ -24,25 +25,34 @@ class ARManager: NSObject, ObservableObject {
     
     var fps: Float = 30.0
     var videoWriter: VideoWriter?
+    var lidarWriter: VideoWriter?
     
     var filename = "ar-captured"
     
     @Published var isRecording = false
     
     override init() {
-        
         arView = ARView(frame: .zero)
-        
+        arView.automaticallyConfigureSession = false
+
         super.init()
         
         let config = ARWorldTrackingConfiguration()
             
         if let hiResFormat = ARWorldTrackingConfiguration.recommendedVideoFormatFor4KResolution {
+            print("hiRes")
             config.videoFormat = hiResFormat
         }
         
-        config.planeDetection = [.horizontal, .vertical]
+        if ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
+            print("sceneDepth")
+            config.frameSemantics = .sceneDepth
+        }
+        
+        config.sceneReconstruction = .meshWithClassification
+        config.planeDetection = [.horizontal/*, .vertical*/]
                 
+        arView.debugOptions.insert(.showSceneUnderstanding)
         arView.session.run(config)
         
         fps = Float(config.videoFormat.framesPerSecond)
@@ -52,7 +62,7 @@ class ARManager: NSObject, ObservableObject {
     
     func record () async {
         let session = await self.arView.session
-        self.filename = "ar-captured-\(round(Date.now.timeIntervalSince1970))"
+        self.filename = "ar-captured-\(Int(Date.now.timeIntervalSince1970))"
         
         videoWriter = VideoWriter()
         videoWriter?.frameTime = Double(1.0 / self.fps)
@@ -60,6 +70,14 @@ class ARManager: NSObject, ObservableObject {
         videoWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
         videoWriter?.url = self.getPathToSave("\(self.filename).mov")
         videoWriter?.start()
+        
+        lidarWriter = VideoWriter()
+        lidarWriter?.queueLabel = "lidar.recording"
+        lidarWriter?.frameTime = Double(1.0 / self.fps)
+        lidarWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
+        lidarWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
+        lidarWriter?.url = self.getPathToSave("\(self.filename)-lidar.mov")
+        lidarWriter?.start()
         
         DispatchQueue.main.async {
             self.isRecording = true
@@ -69,6 +87,7 @@ class ARManager: NSObject, ObservableObject {
     func stopRecording() {
         self.isRecording = false
         videoWriter?.complete();
+        lidarWriter?.complete();
         self.saveSCNFileToDisk()
     }
     
@@ -152,24 +171,68 @@ extension ARManager : ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if (isRecording) {
             self.updateCameraTransform()
+            // recording video
             videoWriter?.submit(pixelBuffer: frame.capturedImage)
+            
+            // recording LiDAR video
+            if let depthMap = frame.sceneDepth?.depthMap {
+                let dataImage = CIImage(cvPixelBuffer: depthMap)
+                var pixelBuffer: CVPixelBuffer?
+                
+                if self.pixelBufferCreateFromImage(ciImage: dataImage, outBuffer: &pixelBuffer) == kCVReturnSuccess {
+                    
+                    if pixelBuffer != nil {
+                        lidarWriter?.submit(pixelBuffer: pixelBuffer!)
+                    } else {
+                        print("Empty pixel buffer")
+                    }
+                } else {
+                    print("Failed to convert depth data")
+                }
+            } else {
+                print("Nothing to record from LiDAR")
+            }
         }
     }
     
-    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        anchors.forEach { anchor in
-            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
-                print("didAdd plane")
-                let id = arPlaneAnchor.identifier
-                if planes.contains(where: {$0.key == id}) {
-                    print("anchor already exists")
-                } else {
-                    let planeAnchorEntity = PlaneAnchorEntity(arPlaneAnchor: arPlaneAnchor)
-                    arView.scene.anchors.append(planeAnchorEntity)
-                    planes[id] = planeAnchorEntity
-                }
-            }
+    // Converting pixel format from lidar to bgra
+    func pixelBufferCreateFromImage(ciImage: CIImage, outBuffer: UnsafeMutablePointer<CVPixelBuffer?>) -> CVReturn {
+        let context = CIContext()
+        let attributes = [
+            kCVPixelBufferCGBitmapContextCompatibilityKey: true,
+            kCVPixelBufferCGImageCompatibilityKey: true
+        ] as CFDictionary
+        
+        let err = CVPixelBufferCreate(kCFAllocatorDefault, Int(ciImage.extent.width), Int(ciImage.extent.height), kCVPixelFormatType_32BGRA, attributes, outBuffer)
+        
+        if err != kCVReturnSuccess {
+            print("Error: \(err)")
+            return err
         }
+        
+        if let buffer = outBuffer.pointee {
+            context.render(ciImage, to: buffer)
+        } else {
+            print("Buffer is empty")
+        }
+        
+        return kCVReturnSuccess
+    }
+    
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+// !!! --- Code alive, dont remove --- !!!
+//        anchors.forEach { anchor in
+//            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+//                let id = arPlaneAnchor.identifier
+//                if planes.contains(where: {$0.key == id}) {
+//                    print("anchor already exists")
+//                } else {
+//                    let planeAnchorEntity = PlaneAnchorEntity(arPlaneAnchor: arPlaneAnchor)
+//                    arView.scene.anchors.append(planeAnchorEntity)
+//                    planes[id] = planeAnchorEntity
+//                }
+//            }
+//        }
     }
 
 }

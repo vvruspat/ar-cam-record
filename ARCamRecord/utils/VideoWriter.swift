@@ -13,6 +13,8 @@ public class VideoWriter: ObservableObject {
 
     var width: Int = 400
     var height: Int = 400
+    
+    var queueLabel = "video.recording"
 
     var frameTime: Double = 1.0 {
         didSet { frameRate = CMTime(seconds: frameTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC)) }
@@ -26,6 +28,7 @@ public class VideoWriter: ObservableObject {
     let writerQueue: DispatchQueue
     let writerCondition: NSCondition
     var writerSemaphore: DispatchSemaphore
+    var pixelFormatType = kCVPixelFormatType_32BGRA
 
     var writer: AVAssetWriter!
     var writerInput: AVAssetWriterInput!
@@ -36,7 +39,7 @@ public class VideoWriter: ObservableObject {
     var currentFrameTime = CMTime(seconds: 0.0, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
 
     public init() {
-        writerQueue = DispatchQueue(label: "us.gerstacker.adventofcode.animator")
+        writerQueue = DispatchQueue(label: queueLabel)
         writerCondition = NSCondition()
         writerSemaphore = DispatchSemaphore(value: backPressure)
     }
@@ -81,12 +84,12 @@ public class VideoWriter: ObservableObject {
             while !self.writerInput.isReadyForMoreMediaData {
                 self.writerCondition.wait()
             }
-
+            
             self.writerCondition.unlock()
-
+            
             self.writerAdaptor.append(pixelBuffer, withPresentationTime: self.currentFrameTime)
             self.currentFrameTime = CMTimeAdd(self.currentFrameTime, self.frameRate)
-
+            
             self.writerSemaphore.signal()
         }
     }
@@ -111,7 +114,7 @@ public class VideoWriter: ObservableObject {
         writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
         
         let sourceAttributes: [String:Any] = [
-            String(kCVPixelBufferPixelFormatTypeKey): NSNumber(value: kCVPixelFormatType_32BGRA),
+            String(kCVPixelBufferPixelFormatTypeKey): NSNumber(value: pixelFormatType),
             String(kCVPixelBufferMetalCompatibilityKey) : NSNumber(value: true)
         ]
 
