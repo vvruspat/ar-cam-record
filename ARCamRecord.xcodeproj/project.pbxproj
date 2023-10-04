@@ -10,6 +10,7 @@
 		5E2A0F882ACCA867005BA504 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F872ACCA867005BA504 /* SettingsView.swift */; };
 		5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */; };
 		5E2A0F8F2ACD583E005BA504 /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */; };
+		5E2A0F912ACD7ACE005BA504 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */; };
 		5EC40F662AC31BA4000C94E9 /* SCNScene.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */; };
 		5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */; };
 		5EC40F6E2AC9B9FA000C94E9 /* CrosshairButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */; };
@@ -47,6 +48,7 @@
 		5E2A0F872ACCA867005BA504 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButtonView.swift; sourceTree = "<group>"; };
 		5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeys.swift; sourceTree = "<group>"; };
+		5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.extension.swift; sourceTree = "<group>"; };
 		5EC40F672AC8331C000C94E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				5EC40F802ACB134B000C94E9 /* axis.usdz */,
 				F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */,
 				F3C3AEBB2A73CB0400F354F9 /* Preview Content */,
+				5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */,
 			);
 			path = ARCamRecord;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3C3AEBD2A73CB0400F354F9 /* Preview Assets.xcassets in Resources */,
+				5E2A0F912ACD7ACE005BA504 /* LaunchScreen.storyboard in Resources */,
 				5EC40F812ACB134B000C94E9 /* axis.usdz in Resources */,
 				F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */,
 			);
@@ -457,6 +461,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -490,6 +495,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
