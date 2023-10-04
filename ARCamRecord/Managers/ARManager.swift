@@ -18,7 +18,6 @@ class ARManager: NSObject, ObservableObject {
     static let shared = ARManager()
     
     let arView: ARView
-    let sceneToSave = SCNScene()
     var cameraTransforms: Array<float4x4> = []
     
     var timer: Timer?
@@ -33,6 +32,7 @@ class ARManager: NSObject, ObservableObject {
     
     @Published var isRecording = false
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
+    @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     
     override init() {
         arView = ARView(frame: .zero)
@@ -91,7 +91,7 @@ class ARManager: NSObject, ObservableObject {
         videoWriter?.url = self.getPathToSave("\(self.filename).mov")
         videoWriter?.start()
         
-        if (UserDefaults.standard.bool(forKey: SettingsKeys.recordLidar)) {
+        if recordLidar {
             lidarWriter = VideoWriter()
             lidarWriter?.queueLabel = "lidar.recording"
             lidarWriter?.frameTime = Double(1.0 / self.fps)
@@ -141,6 +141,8 @@ class ARManager: NSObject, ObservableObject {
     }
     
     func saveSCNFileToDisk() {
+        let sceneToSave = SCNScene()
+        
         arView.scene.anchors.forEach { element in
             let node = SCNNode();
             
@@ -173,11 +175,7 @@ class ARManager: NSObject, ObservableObject {
             ]
             
             sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
-            
-            if let path = getPathToSave("\(self.filename)_test.usda") {
-                sceneToSave.write(to: path, delegate: nil)
-            }
-            
+
             openDirectory()
         }
     }
@@ -201,23 +199,25 @@ extension ARManager : ARSessionDelegate {
             // recording video
             videoWriter?.submit(pixelBuffer: frame.capturedImage)
             
-            // recording LiDAR video
-            if let depthMap = frame.sceneDepth?.depthMap {
-                let dataImage = CIImage(cvPixelBuffer: depthMap)
-                var pixelBuffer: CVPixelBuffer?
-                
-                if self.pixelBufferCreateFromImage(ciImage: dataImage, outBuffer: &pixelBuffer) == kCVReturnSuccess {
+            if recordLidar {
+                // recording LiDAR video
+                if let depthMap = frame.sceneDepth?.depthMap {
+                    let dataImage = CIImage(cvPixelBuffer: depthMap)
+                    var pixelBuffer: CVPixelBuffer?
                     
-                    if pixelBuffer != nil {
-                        lidarWriter?.submit(pixelBuffer: pixelBuffer!)
+                    if self.pixelBufferCreateFromImage(ciImage: dataImage, outBuffer: &pixelBuffer) == kCVReturnSuccess {
+                        
+                        if pixelBuffer != nil {
+                            lidarWriter?.submit(pixelBuffer: pixelBuffer!)
+                        } else {
+                            print("Empty pixel buffer")
+                        }
                     } else {
-                        print("Empty pixel buffer")
+                        print("Failed to convert depth data")
                     }
                 } else {
-                    print("Failed to convert depth data")
+                    print("Nothing to record from LiDAR")
                 }
-            } else {
-                print("Nothing to record from LiDAR")
             }
         }
     }
@@ -262,10 +262,4 @@ extension ARManager : ARSessionDelegate {
 //        }
     }
 
-}
-
-extension UserDefaults {
-    @objc dynamic var showLidar: Bool {
-        return bool(forKey: "showLidar")
-    }
 }
