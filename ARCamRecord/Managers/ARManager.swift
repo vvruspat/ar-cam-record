@@ -9,8 +9,10 @@ import RealityKit
 import SceneKit
 import ARKit
 import CoreVideo
+import SwiftUI
 
 class ARManager: NSObject, ObservableObject {
+
     var planes = [UUID: PlaneAnchorEntity]()
 
     static let shared = ARManager()
@@ -30,6 +32,7 @@ class ARManager: NSObject, ObservableObject {
     var filename = "ar-captured"
     
     @Published var isRecording = false
+    @AppStorage(SettingsKeys.showLidar) var showLidar = false
     
     override init() {
         arView = ARView(frame: .zero)
@@ -52,12 +55,29 @@ class ARManager: NSObject, ObservableObject {
         config.sceneReconstruction = .meshWithClassification
         config.planeDetection = [.horizontal/*, .vertical*/]
                 
-        arView.debugOptions.insert(.showSceneUnderstanding)
+        if (showLidar) {
+            arView.debugOptions.insert(.showSceneUnderstanding)
+        }
+        
+        UserDefaults.standard.addObserver(self, forKeyPath: SettingsKeys.showLidar, options: .new, context: nil)
+
         arView.session.run(config)
         
         fps = Float(config.videoFormat.framesPerSecond)
 
         arView.session.delegate = self
+    }
+    
+    deinit {
+        UserDefaults.standard.removeObserver(self, forKeyPath: SettingsKeys.showLidar)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if showLidar {
+           self.arView.debugOptions.insert(.showSceneUnderstanding)
+        } else {
+           self.arView.debugOptions.remove(.showSceneUnderstanding)
+        }
     }
     
     func record () async {
@@ -71,13 +91,17 @@ class ARManager: NSObject, ObservableObject {
         videoWriter?.url = self.getPathToSave("\(self.filename).mov")
         videoWriter?.start()
         
-        lidarWriter = VideoWriter()
-        lidarWriter?.queueLabel = "lidar.recording"
-        lidarWriter?.frameTime = Double(1.0 / self.fps)
-        lidarWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
-        lidarWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
-        lidarWriter?.url = self.getPathToSave("\(self.filename)-lidar.mov")
-        lidarWriter?.start()
+        if (UserDefaults.standard.bool(forKey: SettingsKeys.recordLidar)) {
+            lidarWriter = VideoWriter()
+            lidarWriter?.queueLabel = "lidar.recording"
+            lidarWriter?.frameTime = Double(1.0 / self.fps)
+            lidarWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
+            lidarWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
+            lidarWriter?.url = self.getPathToSave("\(self.filename)-lidar.mov")
+            lidarWriter?.start()
+        } else {
+            lidarWriter = nil
+        }
         
         DispatchQueue.main.async {
             self.isRecording = true
@@ -162,7 +186,6 @@ class ARManager: NSObject, ObservableObject {
         if let anchor = try? ARScene.loadBox() {
 //            if let anchor = try? Entity.loadAnchor(named: "axis") {
             arView.scene.anchors.append(anchor)
-            print("anchor added \(anchor.position)")
         }
     }
     
@@ -239,4 +262,10 @@ extension ARManager : ARSessionDelegate {
 //        }
     }
 
+}
+
+extension UserDefaults {
+    @objc dynamic var showLidar: Bool {
+        return bool(forKey: "showLidar")
+    }
 }

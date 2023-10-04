@@ -16,7 +16,7 @@ struct CrosshairButtonView: View {
             Button {
                 manager.addAnchor()
             } label: {
-                Image(systemName: "plus").font(.system(size: 48)).tint(.white)
+                Image(systemName: "plus").font(.system(size: 48)).tint(.white.opacity(0.6))
             }
             Spacer()
         }

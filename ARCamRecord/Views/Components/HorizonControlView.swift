@@ -11,7 +11,7 @@ struct HorizonControlView: View {
     @ObservedObject var motionManager = MotionManager.shared
     
     var body: some View {
-        LabelledDivider(angle: -motionManager.pitch, horizontalPadding: 8, color: .green)
+        LabelledDivider(angle: -motionManager.pitch, horizontalPadding: 8)
     }
 }
 

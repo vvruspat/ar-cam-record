@@ -9,34 +9,55 @@ import SwiftUI
 
 struct LabelledDivider: View {
 
+    let animationSpeed = 0.3
     let angle: Double
     let horizontalPadding: CGFloat
-    let color: Color
+    var color: Color {
+        get {
+            if (-2...2).contains(angle) {
+                return Color("LevelSuccessColor")
+            } else if (-12...12).contains(angle) {
+                return Color("LevelWarningColor")
+            } else {
+                return Color("LevelDangerColor")
+            }
+        }
+    }
 
-    init(angle: Double, horizontalPadding: CGFloat = 20, color: Color = .gray) {
+    init(angle: Double, horizontalPadding: CGFloat = 20) {
         self.angle = angle
         self.horizontalPadding = horizontalPadding
-        self.color = color
     }
 
     var body: some View {
         ZStack {
-            Text(String(format: "%.2f˚", angle)).foregroundColor(color.opacity(0.6)).padding(.bottom, 80)
+            Text(String(format: "%.2f˚", angle))
+                .padding(.bottom, 80)
+                .foregroundColor(color)
+                .animation(Animation.easeInOut(duration: animationSpeed), value: color)
+                .fontWeight(.bold)
+                .shadow(color: .black.opacity(0.2), radius: 1, x: 1, y: 1)
+            
             HStack {
-                Spacer().frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                Spacer().frame(width: 100)
                 line
-                Spacer().frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                Spacer().frame(width: 100)
                 line
-                Spacer().frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                Spacer().frame(width: 100)
             }.rotationEffect(.degrees(angle))
+                .animation(Animation.easeInOut(duration: animationSpeed), value: angle)
         }
     }
 
     var line: some View {
-        VStack { Rectangle().foregroundColor(color.opacity(0.6)).frame(height: 2) }.padding(horizontalPadding)
+        VStack { Rectangle()
+            .frame(height: 2) }
+        .padding(horizontalPadding)
+        .foregroundColor(color.opacity(0.6))
+        .animation(Animation.easeInOut(duration: animationSpeed), value: color)
     }
 }
 
 #Preview {
-    LabelledDivider(angle: 2.34, horizontalPadding: 8, color: .green)
+    LabelledDivider(angle: 2.34, horizontalPadding: 8)
 }

@@ -16,10 +16,9 @@ struct ContentView: View {
     @ObservedObject var manager = ARManager.shared
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            ARViewContainer().edgesIgnoringSafeArea(.all)
-            ZStack {
-                CrosshairButtonView()
+        NavigationStack {
+            ZStack(alignment: .bottom) {
+                ARViewContainer().edgesIgnoringSafeArea(.all)
                 ControlsView()
             }
         }

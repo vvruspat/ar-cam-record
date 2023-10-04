@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct ControlsView: View {
+    @AppStorage(SettingsKeys.showHorizon) var showHorizon = true
+    @AppStorage(SettingsKeys.showCrosshair) var showCrosshair = true
+
     var body: some View {
         ZStack {
-            HorizonControlView()
+            if showCrosshair {
+                CrosshairButtonView()
+            }
+            if showHorizon {
+                HorizonControlView()
+            }
             HStack(alignment: .center) {
                 Spacer()
                 ZStack(alignment: .center) {
@@ -22,6 +30,10 @@ struct ControlsView: View {
                         Spacer()
                         RecordButtonView()
                         Spacer()
+                    }
+                    VStack(alignment: .trailing) {
+                        Spacer()
+                        SettingsButtonView()
                     }
                 }
             }
