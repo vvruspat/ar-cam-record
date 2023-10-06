@@ -41,6 +41,9 @@ class ARManager: NSObject, ObservableObject {
         }
     }
 
+    /// Ideally you should no use AppStorage like this in this class
+    ///  This creates tight coupling
+    ///  import SwiftUI is a sign that this class doing something unneccessarily
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     
