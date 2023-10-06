@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct AddAnchorButtonView: View {
-    var manager = ARManager.shared
-    
+    let didTapAnchor: () -> Void
+
     var body: some View {
         Button {
-            manager.addAnchor()
+            didTapAnchor()
         } label: {
             Image(systemName: "plus.square.dashed").font(.system(size: 32)).tint(.white)
-        }.padding(16).frame( width: 48, height: 48)
+        }
+        .padding(16)
+        .frame(width: 48, height: 48)
     }
 }
 
 #Preview {
-    AddAnchorButtonView()
+    AddAnchorButtonView(didTapAnchor: {})
 }
