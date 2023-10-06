@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CrosshairButtonView: View {
-    var manager = ARManager.shared
     let didTapAnchor: () -> Void
 
     var body: some View {

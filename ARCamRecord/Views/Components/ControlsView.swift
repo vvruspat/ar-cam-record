@@ -10,7 +10,7 @@ import SwiftUI
 struct ControlsView: View {
     @AppStorage(SettingsKeys.showHorizon) var showHorizon = true
     @AppStorage(SettingsKeys.showCrosshair) var showCrosshair = true
-    let manager = ARManager.shared
+    let manager: ARManager
 
     var body: some View {
         ZStack {
@@ -47,5 +47,5 @@ struct ControlsView: View {
 }
 
 #Preview {
-    ControlsView()
+    ControlsView(manager: .shared)
 }
