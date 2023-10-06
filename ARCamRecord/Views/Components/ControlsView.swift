@@ -15,7 +15,7 @@ struct ControlsView: View {
     var body: some View {
         ZStack {
             if showCrosshair {
-                CrosshairButtonView()
+                CrosshairButtonView(didTapAnchor: didTapAnchor)
             }
             if showHorizon {
                 HorizonControlView()

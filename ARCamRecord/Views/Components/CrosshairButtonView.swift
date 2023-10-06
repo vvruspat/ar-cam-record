@@ -9,12 +9,13 @@ import SwiftUI
 
 struct CrosshairButtonView: View {
     var manager = ARManager.shared
-    
+    let didTapAnchor: () -> Void
+
     var body: some View {
         HStack(alignment: .center) {
             Spacer()
             Button {
-                manager.addAnchor()
+                didTapAnchor()
             } label: {
                 Image(systemName: "plus").font(.system(size: 48)).tint(.white.opacity(0.6))
             }
@@ -24,5 +25,5 @@ struct CrosshairButtonView: View {
 }
 
 #Preview {
-    CrosshairButtonView()
+    CrosshairButtonView(didTapAnchor: {})
 }
