@@ -11,12 +11,17 @@ import ARKit
 import CoreVideo
 import SwiftUI
 
+protocol ARManagerProtocol  {
+    func updateRecording(isRecording: Bool)
+}
+
 class ARManager: NSObject, ObservableObject {
 
     var planes = [UUID: PlaneAnchorEntity]()
 
     static let shared = ARManager()
-    
+    var delegate: ARManagerProtocol?
+
     let arView: ARView
     var cameraTransforms: Array<float4x4> = []
     
@@ -30,7 +35,15 @@ class ARManager: NSObject, ObservableObject {
     
     var filename = "ar-captured"
     
-    @Published var isRecording = false
+    var isRecording: Bool = false {
+        didSet {
+            delegate?.updateRecording(isRecording: isRecording)
+        }
+    }
+
+    /// Ideally you should no use AppStorage like this in this class
+    ///  This creates tight coupling
+    ///  import SwiftUI is a sign that this class doing something unneccessarily
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     
@@ -103,9 +116,7 @@ class ARManager: NSObject, ObservableObject {
             lidarWriter = nil
         }
         
-        DispatchQueue.main.async {
-            self.isRecording = true
-        }
+        self.isRecording = true
     }
     
     func stopRecording() {

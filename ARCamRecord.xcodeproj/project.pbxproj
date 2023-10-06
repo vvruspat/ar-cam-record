@@ -37,6 +37,7 @@
 		5EC40FA12ACC51A7000C94E9 /* String.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40FA02ACC51A7000C94E9 /* String.extension.swift */; };
 		5ECB90002ABFB42000F9DF4D /* ARManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */; };
 		5ECB90032ABFB55200F9DF4D /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB90022ABFB55200F9DF4D /* ARViewContainer.swift */; };
+		603D12272AD030D800F0EFF9 /* RecordButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603D12262AD030D800F0EFF9 /* RecordButtonViewModel.swift */; };
 		F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */; };
 		F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB72A73CB0300F354F9 /* ContentView.swift */; };
 		F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */; };
@@ -76,6 +77,7 @@
 		5EC40FA02ACC51A7000C94E9 /* String.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.extension.swift; sourceTree = "<group>"; };
 		5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARManager.swift; sourceTree = "<group>"; };
 		5ECB90022ABFB55200F9DF4D /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
+		603D12262AD030D800F0EFF9 /* RecordButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButtonViewModel.swift; sourceTree = "<group>"; };
 		F3C3AEB22A73CB0300F354F9 /* ARCamRecord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARCamRecord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCamRecordApp.swift; sourceTree = "<group>"; };
 		F3C3AEB72A73CB0300F354F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */,
 				5EC40F702AC9BA56000C94E9 /* ControlsView.swift */,
 				5EC40F722AC9BAA3000C94E9 /* RecordButtonView.swift */,
+				603D12262AD030D800F0EFF9 /* RecordButtonViewModel.swift */,
 				5EC40F742AC9BAED000C94E9 /* AddAnchorButtonView.swift */,
 				5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */,
 				5EC40F762AC9BBC0000C94E9 /* HorizonControlView.swift */,
@@ -319,6 +322,7 @@
 				5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */,
 				5EC40F662AC31BA4000C94E9 /* SCNScene.extension.swift in Sources */,
 				5ECB90032ABFB55200F9DF4D /* ARViewContainer.swift in Sources */,
+				603D12272AD030D800F0EFF9 /* RecordButtonViewModel.swift in Sources */,
 				5EC40F732AC9BAA3000C94E9 /* RecordButtonView.swift in Sources */,
 				5EC40F962ACC4F48000C94E9 /* SIMD3.extension.swift in Sources */,
 			);

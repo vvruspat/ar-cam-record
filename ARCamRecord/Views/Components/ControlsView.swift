@@ -10,11 +10,12 @@ import SwiftUI
 struct ControlsView: View {
     @AppStorage(SettingsKeys.showHorizon) var showHorizon = true
     @AppStorage(SettingsKeys.showCrosshair) var showCrosshair = true
+    let manager: ARManager
 
     var body: some View {
         ZStack {
             if showCrosshair {
-                CrosshairButtonView()
+                CrosshairButtonView(didTapAnchor: didTapAnchor)
             }
             if showHorizon {
                 HorizonControlView()
@@ -23,12 +24,12 @@ struct ControlsView: View {
                 Spacer()
                 ZStack(alignment: .center) {
                     VStack(alignment: .trailing) {
-                        AddAnchorButtonView()
+                        AddAnchorButtonView(didTapAnchor: didTapAnchor)
                         Spacer()
                     }
                     VStack(alignment: .trailing) {
                         Spacer()
-                        RecordButtonView()
+                        RecordButtonView(manager: RecordButtonViewModel(manager: manager))
                         Spacer()
                     }
                     VStack(alignment: .trailing) {
@@ -39,8 +40,12 @@ struct ControlsView: View {
             }
         }
     }
+
+    private func didTapAnchor() {
+        manager.addAnchor()
+    }
 }
 
 #Preview {
-    ControlsView()
+    ControlsView(manager: .shared)
 }

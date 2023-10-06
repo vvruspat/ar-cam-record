@@ -12,14 +12,11 @@ import MetalKit
 import ModelIO
 
 struct ContentView: View {
-    
-    @ObservedObject var manager = ARManager.shared
-    
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
                 ARViewContainer().edgesIgnoringSafeArea(.all)
-                ControlsView()
+                ControlsView(manager: .shared)
             }
         }
     }
