@@ -29,7 +29,7 @@ struct ControlsView: View {
                     }
                     VStack(alignment: .trailing) {
                         Spacer()
-                        RecordButtonView()
+                        RecordButtonView(manager: RecordButtonViewModel(manager: manager))
                         Spacer()
                     }
                     VStack(alignment: .trailing) {

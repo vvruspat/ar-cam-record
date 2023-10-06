@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct RecordButtonView: View {
-    @ObservedObject var manager = ARManager.shared
-    
+    @ObservedObject
+    var manager: RecordButtonViewModel
+
     var body: some View {
         Button() {
             print("tap")
             if (!manager.isRecording) {
-                Task {
-                    await manager.record()
-                }
+                manager.record()
             } else {
                 manager.stopRecording()
             }
@@ -33,5 +32,5 @@ struct RecordButtonView: View {
 }
 
 #Preview {
-    RecordButtonView()
+    RecordButtonView(manager: RecordButtonViewModel(manager: .shared))
 }
