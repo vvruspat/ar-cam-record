@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct ARViewContainer: UIViewRepresentable {
-    @ObservedObject var manager = ARManager.shared
+    @EnvironmentObject var manager: ARManager
 
     func makeUIView(context: Context) -> some UIView {
         return manager.arView
     }
 
     func updateUIView(_ uiView: UIViewType, context: Context) {        
-        manager.updateCameraTransform()
     }
 }

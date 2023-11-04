@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E00A8832AF5037A00022408 /* compass.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 5E00A8822AF5037A00022408 /* compass.usdz */; };
 		5E2A0F882ACCA867005BA504 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F872ACCA867005BA504 /* SettingsView.swift */; };
 		5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */; };
 		5E2A0F8F2ACD583E005BA504 /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */; };
@@ -44,11 +45,27 @@
 		F3C3AEE02A73D89900F354F9 /* ARScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		5E37B9AA2AF700C500851434 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		5E00A8822AF5037A00022408 /* compass.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = compass.usdz; sourceTree = "<group>"; };
 		5E2A0F872ACCA867005BA504 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButtonView.swift; sourceTree = "<group>"; };
 		5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeys.swift; sourceTree = "<group>"; };
 		5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5E37B9802AF7000C00851434 /* ARCamRecord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ARCamRecord.entitlements; sourceTree = "<group>"; };
+		5E37B9872AF700C500851434 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.extension.swift; sourceTree = "<group>"; };
 		5EC40F672AC8331C000C94E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
@@ -101,6 +118,14 @@
 				5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		5E37B9862AF700C500851434 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E37B9872AF700C500851434 /* UniformTypeIdentifiers.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		5EC40F642AC31B7E000C94E9 /* Utils */ = {
@@ -180,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				F3C3AEB42A73CB0300F354F9 /* ARCamRecord */,
+				5E37B9862AF700C500851434 /* Frameworks */,
 				F3C3AEB32A73CB0300F354F9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -195,6 +221,7 @@
 		F3C3AEB42A73CB0300F354F9 /* ARCamRecord */ = {
 			isa = PBXGroup;
 			children = (
+				5E37B9802AF7000C00851434 /* ARCamRecord.entitlements */,
 				5EC40F672AC8331C000C94E9 /* Info.plist */,
 				5E2A0F8D2ACD57E3005BA504 /* Constants */,
 				5EC40F642AC31B7E000C94E9 /* Utils */,
@@ -203,6 +230,7 @@
 				F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */,
 				F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */,
 				5EC40F802ACB134B000C94E9 /* axis.usdz */,
+				5E00A8822AF5037A00022408 /* compass.usdz */,
 				F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */,
 				F3C3AEBB2A73CB0400F354F9 /* Preview Content */,
 				5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */,
@@ -228,6 +256,7 @@
 				F3C3AEAE2A73CB0300F354F9 /* Sources */,
 				F3C3AEAF2A73CB0300F354F9 /* Frameworks */,
 				F3C3AEB02A73CB0300F354F9 /* Resources */,
+				5E37B9AA2AF700C500851434 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -245,7 +274,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1410;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					F3C3AEB12A73CB0300F354F9 = {
@@ -278,6 +307,7 @@
 			files = (
 				F3C3AEBD2A73CB0400F354F9 /* Preview Assets.xcassets in Resources */,
 				5E2A0F912ACD7ACE005BA504 /* LaunchScreen.storyboard in Resources */,
+				5E00A8832AF5037A00022408 /* compass.usdz in Resources */,
 				5EC40F812ACB134B000C94E9 /* axis.usdz in Resources */,
 				F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */,
 			);
@@ -446,8 +476,10 @@
 		F3C3AEC12A73CB0400F354F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ARCamRecord/ARCamRecord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ARCamRecord/Preview Content\"";
@@ -456,8 +488,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ARCamRecord/Info.plist;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna filming AR porn";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porn should be with the sound, even AR";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Record video to sync it with 3D file";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Request access to location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need access to compass for right calculation camera position";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Record sound with the video";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -480,8 +514,10 @@
 		F3C3AEC22A73CB0400F354F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ARCamRecord/ARCamRecord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ARCamRecord/Preview Content\"";
@@ -490,8 +526,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ARCamRecord/Info.plist;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "I wanna filming AR porn";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Porn should be with the sound, even AR";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Record video to sync it with 3D file";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Request access to location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need access to compass for right calculation camera position";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Record sound with the video";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

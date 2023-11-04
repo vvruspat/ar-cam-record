@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecordButtonView: View {
-    @ObservedObject var manager = ARManager.shared
+    @EnvironmentObject var manager: ARManager
     
     var body: some View {
         Button() {

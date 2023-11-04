@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CrosshairButtonView: View {
-    var manager = ARManager.shared
+    @EnvironmentObject var manager: ARManager
     
     var body: some View {
         HStack(alignment: .center) {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddAnchorButtonView: View {
-    var manager = ARManager.shared
+    @EnvironmentObject var manager: ARManager
     
     var body: some View {
         Button {

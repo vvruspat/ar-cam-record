@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject var manager: ARManager
+    
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.showHorizon) var showHorizon = true
     @AppStorage(SettingsKeys.showCrosshair) var showCrosshair = true
-    
+
     var body: some View {
         List {
             Section("HUD") {
@@ -23,7 +25,7 @@ struct SettingsView: View {
                     Toggle(isOn: $showLidar) {
                         Text("Show LiDAR detection")
                     }
-                }
+                }.disabled(!manager.supportLidar)
                 HStack{
                     HStack(alignment: .center) {
                         Image(systemName: "circle.and.line.horizontal")
@@ -50,7 +52,7 @@ struct SettingsView: View {
                     Toggle(isOn: $recordLidar) {
                         Text("Record LiDAR video")
                     }
-                }
+                }.disabled(!manager.supportLidar)
             }
         }.navigationBarTitle("Settings")
     }

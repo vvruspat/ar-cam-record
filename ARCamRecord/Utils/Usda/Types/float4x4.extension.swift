@@ -15,7 +15,7 @@ extension float4x4: USDAConvertable {
             if (index > 0) {
                 result += ", "
             }
-            result += "(\(self[index][0]), \(self[index][1]), \(self[index][2]), \(self[index][3]))"
+            result += "(\(self[index].x), \(self[index].y), \(self[index].z), \(self[index].w))"
         }
         
         result += ")"

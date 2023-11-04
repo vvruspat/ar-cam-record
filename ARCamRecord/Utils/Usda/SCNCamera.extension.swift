@@ -14,12 +14,13 @@ extension SCNCamera {
         result += "\t float focalLength = \(self.focalLength) \n"
         result += "\t float horizontalAperture = \(self.sensorHeight) \n"
         result += "\t float horizontalApertureOffset = 0 \n"
-        result += "\t float2 clippingRange = (1, 100) \n"
-        result += "\t token projection = \"perspective\" \n"
         result += "\t float verticalAperture = \(self.sensorHeight) \n"
         result += "\t float verticalApertureOffset = 0 \n"
+        result += "\t float2 clippingRange = (0.01, 100) \n"
+        result += "\t token projection = \"perspective\" \n"
+                
         result += "}\n"
-        
+
         return result
     }
 }

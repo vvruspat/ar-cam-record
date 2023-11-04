@@ -7,7 +7,7 @@
 
 import SceneKit
 
-typealias KeyframeAnimation = [String:[String:Array<USDAConvertable>]]
+typealias KeyframeAnimation = [String:MDLTransform]
 
 extension SCNScene {
     func exportToUsda(animation: KeyframeAnimation, fps: Float) -> String {
@@ -16,14 +16,13 @@ extension SCNScene {
         usdaData += "(\n"
         usdaData += "\t defaultPrim = \"Light\"\n"
         usdaData += "\t doc = \"ArCamRecord\"\n"
-        usdaData += "\t endTimeCode = \(animation["CameraNode"]?["transform"]?.count ?? 1)\n"
+        usdaData += "\t endTimeCode = \(animation["CameraNode"]?.keyTimes.count ?? 1)\n"
         usdaData += "\t metersPerUnit = 1\n"
         usdaData += "\t startTimeCode = 1\n"
         usdaData += "\t timeCodesPerSecond = \(fps)\n"
-        usdaData += "\t upAxis = \"Z\"\n"
+        usdaData += "\t upAxis = \"Y\"\n"
         usdaData += ")\n"
 
-        
         usdaData += "\t" + self.rootNode.toUsdaNode(animation)
         
         return usdaData

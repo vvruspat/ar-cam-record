@@ -18,44 +18,63 @@ class ARManager: NSObject, ObservableObject {
     static let shared = ARManager()
     
     let arView: ARView
-    var cameraTransforms: Array<float4x4> = []
-    
+    var cameraTransforms = MDLTransform()
+    var initTransform = matrix_float4x4([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+    var anchors: [simd_float4x4] = []
     var timer: Timer?
     var counter = 0
     var timeStart: TimeInterval?
-    
+
     var fps: Float = 30.0
+    var startAnimation = 1
     var videoWriter: VideoWriter?
     var lidarWriter: VideoWriter?
-    
+
     var filename = "ar-captured"
-    
+
+    var sceneToSave = SCNScene()
+    var cameraNode = SCNNode()
+    let config = ARWorldTrackingConfiguration()
+
+    let supportLidar = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
+
     @Published var isRecording = false
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
-    
+
     override init() {
         arView = ARView(frame: .zero)
         arView.automaticallyConfigureSession = false
+        
+        sceneToSave.rootNode.position = SCNVector3(0, 0, 0)
+        sceneToSave.rootNode.rotation = SCNVector4(0, 0, 0, 0)
+        sceneToSave.rootNode.name = "ARCamRecord"
+        
+        cameraNode.position = SCNVector3(0, 0, 0)
+        cameraNode.rotation = SCNVector4(0, 0, 0, 0)
+        cameraNode.camera = SCNCamera()
+        cameraNode.camera!.name = "iPhoneCamera"
+        cameraNode.name = "CameraNode"
+
+        sceneToSave.rootNode.addChildNode(cameraNode)
 
         super.init()
         
-        let config = ARWorldTrackingConfiguration()
-            
+        config.worldAlignment = .gravityAndHeading
+        config.providesAudioData = true
+           
         if let hiResFormat = ARWorldTrackingConfiguration.recommendedVideoFormatFor4KResolution {
-            print("hiRes")
             config.videoFormat = hiResFormat
         }
         
         if ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth) {
-            print("sceneDepth")
             config.frameSemantics = .sceneDepth
         }
-        
-        config.sceneReconstruction = .meshWithClassification
-        config.planeDetection = [.horizontal/*, .vertical*/]
+
+        config.planeDetection = [.horizontal, .vertical]
                 
         if (showLidar) {
+            config.sceneReconstruction = .meshWithClassification
             arView.debugOptions.insert(.showSceneUnderstanding)
         }
         
@@ -64,7 +83,7 @@ class ARManager: NSObject, ObservableObject {
         arView.session.run(config)
         
         fps = Float(config.videoFormat.framesPerSecond)
-
+        
         arView.session.delegate = self
     }
     
@@ -82,13 +101,14 @@ class ARManager: NSObject, ObservableObject {
     
     func record () async {
         let session = await self.arView.session
+        
         self.filename = "ar-captured-\(Int(Date.now.timeIntervalSince1970))"
         
         videoWriter = VideoWriter()
         videoWriter?.frameTime = Double(1.0 / self.fps)
         videoWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
         videoWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
-        videoWriter?.url = self.getPathToSave("\(self.filename).mov")
+        videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
         videoWriter?.start()
         
         if recordLidar {
@@ -97,13 +117,15 @@ class ARManager: NSObject, ObservableObject {
             lidarWriter?.frameTime = Double(1.0 / self.fps)
             lidarWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
             lidarWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
-            lidarWriter?.url = self.getPathToSave("\(self.filename)-lidar.mov")
+            lidarWriter?.url = self.getTmpPathToSave("\(self.filename)-lidar.mov")
             lidarWriter?.start()
         } else {
             lidarWriter = nil
         }
         
         DispatchQueue.main.async {
+            self.setInitialPosition()
+            self.startAnimation = self.cameraTransforms.keyTimes.count
             self.isRecording = true
         }
     }
@@ -120,12 +142,19 @@ class ARManager: NSObject, ObservableObject {
                                         in: .userDomainMask).first
     }
     
-    func getPathToSave(_ fileName: String) -> URL? {
-        return getDirectory()?.appendingPathComponent(fileName)
+    func getPathToSave(_ fileName: String, folder: URL?) -> URL? {
+        return folder?.appendingPathComponent(fileName)
     }
     
-    func openDirectory() {
-        guard let documentDirectory = getDirectory(),
+    func getTmpPathToSave(_ fileName: String) -> URL? {
+        let tempFilePath = NSTemporaryDirectory() + fileName
+        let tempURL = URL(fileURLWithPath: tempFilePath)
+        
+        return tempURL
+    }
+    
+    func openDirectory(_ folder: URL?) {
+        guard let documentDirectory = folder ?? getDirectory(),
                   let components = NSURLComponents(url: documentDirectory, resolvingAgainstBaseURL: true) else {
                 return
             }
@@ -140,62 +169,145 @@ class ARManager: NSObject, ObservableObject {
             }
     }
     
+    func moveFile(from: URL, to: URL) {
+        do {
+            if FileManager.default.fileExists(atPath: to.path) {
+                try FileManager.default.removeItem(atPath: to.path)
+            }
+            try FileManager.default.moveItem(atPath: from.path, toPath: to.path)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     func saveSCNFileToDisk() {
-        let sceneToSave = SCNScene()
+        var index = 1
         
-        arView.scene.anchors.forEach { element in
+        anchors.forEach { element in
             let node = SCNNode();
             
-            node.position = SCNVector3(element.position)
-            node.transform = SCNMatrix4(element.transform.matrix)
-            node.name = "Anchor\(sceneToSave.rootNode.childNodes.count)"
-            
-            node.geometry = SCNSphere(radius: 8)
+            node.setWorldTransform(SCNMatrix4(element))
+            node.name = "Anchor\(index)"
             
             sceneToSave.rootNode.addChildNode(node)
+            
+            index += 1
         }
         
-        if let path = getPathToSave("\(self.filename).usda") {
-            
-            print("Saving to documents: \(path)")
-            
-            let cameraNode = SCNNode()
-            
-            cameraNode.camera = SCNCamera()
-            cameraNode.camera!.name = "iPhoneCamera"
-            cameraNode.name = "CameraNode"
-            cameraNode.position = SCNVector3(x: 0, y: 0, z: 0)
-            
-            sceneToSave.rootNode.addChildNode(cameraNode)
-            
-            let animation = [
-                "CameraNode": [
-                    "transform": cameraTransforms
-                ]
+        if let path = getTmpPathToSave("\(self.filename).usda") {
+            let animation: KeyframeAnimation = [
+                "CameraNode": cameraTransforms
             ]
             
             sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
-
-            openDirectory()
         }
+        
+        finalizeSave()
+    }
+    
+    func getDateFormat() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss"
+        
+        return formatter
+    }
+    
+    func getDateAsString() -> String {
+        return getDateFormat().string(from: Date.now)
+    }
+    
+    func createAppFolder() -> URL? {
+        if let documentsDirectory = getDirectory() {
+            let folderName = "Takes"
+            let folderURL = documentsDirectory
+                                .appendingPathComponent(folderName)
+                                .appendingPathComponent("\(getDateAsString())")
+            
+            do {
+                if !FileManager.default.fileExists(atPath: folderURL.path()) {
+                    try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: nil)
+                } else {
+                    print("Folder \(folderURL.path()) exist")
+                }
+                
+                return folderURL
+            } catch {
+                print("Failed to create directory \(error.localizedDescription)")
+            }
+        }
+        
+        return nil
+    }
+    
+    func finalizeSave() {
+        let folderToMove = createAppFolder()
+        
+        // Move Project
+        if let tmpPath = getTmpPathToSave("\(self.filename).usda"),
+           let path = getPathToSave("\(self.filename).usda", folder: folderToMove) {
+            moveFile(from: tmpPath, to: path)
+        }
+        
+        // Move Video
+        if let path = getPathToSave("\(self.filename).mov", folder: folderToMove),
+           let tmpPath = videoWriter?.url {
+            moveFile(from: tmpPath, to: path)
+        }
+        
+        // Move LiDAR
+        if let path = getPathToSave("\(self.filename)-lidar.mov", folder: folderToMove),
+           let tmpPath = lidarWriter?.url {
+            moveFile(from: tmpPath, to: path)
+        }
+
+        openDirectory(folderToMove)
     }
     
     func addAnchor() {
-        if let anchor = try? ARScene.loadBox() {
-//            if let anchor = try? Entity.loadAnchor(named: "axis") {
-            arView.scene.anchors.append(anchor)
+        let testResult = arView.hitTest(arView.center, types: .existingPlaneUsingExtent)
+        
+        if (testResult.isEmpty) {
+            print("No plane detected")
+        } else {
+            if let anchor = try? Entity.loadAnchor(named: "axis") {
+                if let columns = testResult.first?.worldTransform.columns.3 {
+                    let position = SIMD3(x: columns.x, y: columns.y, z: columns.z)
+                    
+                    anchor.setPosition(position, relativeTo: nil)
+                    arView.scene.anchors.append(anchor)
+                    
+                    anchors.append(testResult.first!.worldTransform)
+                }
+            }
         }
     }
     
-    func updateCameraTransform() {
-        cameraTransforms.append(arView.cameraTransform.matrix)
+    func setInitialPosition() {
+        cameraTransforms.setMatrix(initTransform, forTime: 0)
+    }
+    
+    func updateCameraTransform(_ frame: ARFrame) {
+        let transform = frame.camera.transform
+        let rotation = frame.camera.eulerAngles
+        let position = transform.columns.3
+        let elapsedTime = frame.timestamp
+        
+        cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
+        cameraTransforms.setRotation(rotation, forTime: elapsedTime)
+    }
+    
+    func updateCameraPosition(_ frame: ARFrame) {
+        let transform = frame.camera.transform
+
+        initTransform = initTransform * transform
     }
 }
 
 extension ARManager : ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if (isRecording) {
-            self.updateCameraTransform()
+            updateCameraTransform(frame)
             // recording video
             videoWriter?.submit(pixelBuffer: frame.capturedImage)
             
@@ -219,6 +331,8 @@ extension ARManager : ARSessionDelegate {
                     print("Nothing to record from LiDAR")
                 }
             }
+        } else {
+            updateCameraPosition(frame)
         }
     }
     

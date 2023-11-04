@@ -11,7 +11,7 @@ import SwiftUI
 struct ARCamRecordApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(ARManager.shared)
         }
     }
 }

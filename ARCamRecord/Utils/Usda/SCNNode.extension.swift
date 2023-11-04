@@ -10,16 +10,13 @@ import SceneKit
 extension SCNNode {
     func toUsdaNode(_ animation: KeyframeAnimation) -> String {
         var usdaNode = "def Xform \"\(self.name?.replacingOccurrences(of: " ", with: "") ?? "Node\(Int.random(in: 0...100))")\" {\n"
-        let nodeAnimation = animation[self.name ?? ""] ?? [:]
         var isTranformAnimated = false
         
-        for key in nodeAnimation.keys {
-            if let value = nodeAnimation[key] {
-                if (key == "transform") {
-                    isTranformAnimated = true
-                }
-                usdaNode += "\t " + UsdaUtils.getAnimatedAttribute(attrName: key, attrValue: value) + "\n"
-            }
+        if let nodeAnimation = animation[self.name ?? ""] {
+            isTranformAnimated = true
+            usdaNode += "\t " + UsdaUtils.getAnimatedAttribute(attrName: "transform", attrValue: nodeAnimation.keyTimes.map({ time in
+                return nodeAnimation.localTransform(atTime: TimeInterval.init(truncating: time))
+            })) + "\n"
         }
         
         if (!isTranformAnimated) {
