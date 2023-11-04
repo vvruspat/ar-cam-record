@@ -12,7 +12,6 @@ struct RecordButtonView: View {
     
     var body: some View {
         Button() {
-            print("tap")
             if (!manager.isRecording) {
                 Task {
                     await manager.record()
