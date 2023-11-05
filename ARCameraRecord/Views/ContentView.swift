@@ -15,8 +15,8 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                ARViewContainer().edgesIgnoringSafeArea(.all)
-                ControlsView()
+                ARViewContainer().ignoresSafeArea(.all)
+                ControlsView().padding(.top, 10.0)
             }
         }
     }
