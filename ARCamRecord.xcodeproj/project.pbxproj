@@ -12,6 +12,7 @@
 		5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */; };
 		5E2A0F8F2ACD583E005BA504 /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */; };
 		5E2A0F912ACD7ACE005BA504 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */; };
+		5E37B9B02AF7838100851434 /* JPSVolumeButtonHandler in Frameworks */ = {isa = PBXBuildFile; productRef = 5E37B9AF2AF7838100851434 /* JPSVolumeButtonHandler */; };
 		5EC40F662AC31BA4000C94E9 /* SCNScene.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */; };
 		5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */; };
 		5EC40F6E2AC9B9FA000C94E9 /* CrosshairButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */; };
@@ -106,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E37B9B02AF7838100851434 /* JPSVolumeButtonHandler in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +265,9 @@
 			dependencies = (
 			);
 			name = ARCamRecord;
+			packageProductDependencies = (
+				5E37B9AF2AF7838100851434 /* JPSVolumeButtonHandler */,
+			);
 			productName = ARCamRecord;
 			productReference = F3C3AEB22A73CB0300F354F9 /* ARCamRecord.app */;
 			productType = "com.apple.product-type.application";
@@ -291,6 +296,9 @@
 				Base,
 			);
 			mainGroup = F3C3AEA92A73CB0300F354F9;
+			packageReferences = (
+				5E37B9AE2AF7838100851434 /* XCRemoteSwiftPackageReference "JPSVolumeButtonHandler" */,
+			);
 			productRefGroup = F3C3AEB32A73CB0300F354F9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -571,6 +579,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5E37B9AE2AF7838100851434 /* XCRemoteSwiftPackageReference "JPSVolumeButtonHandler" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/JPSVolumeButtonHandler.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5E37B9AF2AF7838100851434 /* JPSVolumeButtonHandler */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5E37B9AE2AF7838100851434 /* XCRemoteSwiftPackageReference "JPSVolumeButtonHandler" */;
+			productName = JPSVolumeButtonHandler;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F3C3AEAA2A73CB0300F354F9 /* Project object */;
 }
