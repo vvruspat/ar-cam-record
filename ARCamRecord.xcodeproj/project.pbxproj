@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E00A8832AF5037A00022408 /* compass.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 5E00A8822AF5037A00022408 /* compass.usdz */; };
 		5E2A0F882ACCA867005BA504 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F872ACCA867005BA504 /* SettingsView.swift */; };
 		5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */; };
 		5E2A0F8F2ACD583E005BA504 /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */; };
-		5E2A0F912ACD7ACE005BA504 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */; };
-		5E37B9B02AF7838100851434 /* JPSVolumeButtonHandler in Frameworks */ = {isa = PBXBuildFile; productRef = 5E37B9AF2AF7838100851434 /* JPSVolumeButtonHandler */; };
+		5E2A0F912ACD7ACE005BA504 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A0F902ACD7ACE005BA504 /* Launch.storyboard */; };
 		5EC40F662AC31BA4000C94E9 /* SCNScene.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */; };
 		5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */; };
 		5EC40F6E2AC9B9FA000C94E9 /* CrosshairButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */; };
@@ -43,7 +41,6 @@
 		F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB72A73CB0300F354F9 /* ContentView.swift */; };
 		F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */; };
 		F3C3AEBD2A73CB0400F354F9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEBC2A73CB0400F354F9 /* Preview Assets.xcassets */; };
-		F3C3AEE02A73D89900F354F9 /* ARScene.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,11 +57,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5E00A8822AF5037A00022408 /* compass.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = compass.usdz; sourceTree = "<group>"; };
 		5E2A0F872ACCA867005BA504 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButtonView.swift; sourceTree = "<group>"; };
 		5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeys.swift; sourceTree = "<group>"; };
-		5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5E2A0F902ACD7ACE005BA504 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		5E37B9802AF7000C00851434 /* ARCamRecord.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ARCamRecord.entitlements; sourceTree = "<group>"; };
 		5E37B9872AF700C500851434 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.extension.swift; sourceTree = "<group>"; };
@@ -99,7 +95,6 @@
 		F3C3AEB72A73CB0300F354F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3C3AEBC2A73CB0400F354F9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = ARScene.rcproject; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E37B9B02AF7838100851434 /* JPSVolumeButtonHandler in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,10 +226,8 @@
 				F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */,
 				F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */,
 				5EC40F802ACB134B000C94E9 /* axis.usdz */,
-				5E00A8822AF5037A00022408 /* compass.usdz */,
-				F3C3AEDF2A73D89900F354F9 /* ARScene.rcproject */,
 				F3C3AEBB2A73CB0400F354F9 /* Preview Content */,
-				5E2A0F902ACD7ACE005BA504 /* LaunchScreen.storyboard */,
+				5E2A0F902ACD7ACE005BA504 /* Launch.storyboard */,
 			);
 			path = ARCamRecord;
 			sourceTree = "<group>";
@@ -266,7 +258,6 @@
 			);
 			name = ARCamRecord;
 			packageProductDependencies = (
-				5E37B9AF2AF7838100851434 /* JPSVolumeButtonHandler */,
 			);
 			productName = ARCamRecord;
 			productReference = F3C3AEB22A73CB0300F354F9 /* ARCamRecord.app */;
@@ -297,7 +288,6 @@
 			);
 			mainGroup = F3C3AEA92A73CB0300F354F9;
 			packageReferences = (
-				5E37B9AE2AF7838100851434 /* XCRemoteSwiftPackageReference "JPSVolumeButtonHandler" */,
 			);
 			productRefGroup = F3C3AEB32A73CB0300F354F9 /* Products */;
 			projectDirPath = "";
@@ -314,8 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3C3AEBD2A73CB0400F354F9 /* Preview Assets.xcassets in Resources */,
-				5E2A0F912ACD7ACE005BA504 /* LaunchScreen.storyboard in Resources */,
-				5E00A8832AF5037A00022408 /* compass.usdz in Resources */,
+				5E2A0F912ACD7ACE005BA504 /* Launch.storyboard in Resources */,
 				5EC40F812ACB134B000C94E9 /* axis.usdz in Resources */,
 				F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */,
 			);
@@ -342,7 +331,6 @@
 				5EC40F8D2ACC4E7D000C94E9 /* SCNGeometry.extension.swift in Sources */,
 				5ECB90002ABFB42000F9DF4D /* ARManager.swift in Sources */,
 				F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */,
-				F3C3AEE02A73D89900F354F9 /* ARScene.rcproject in Sources */,
 				5EC40F9B2ACC5186000C94E9 /* Bool.extension.swift in Sources */,
 				F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */,
 				5EC40F9D2ACC518F000C94E9 /* Int.extension.swift in Sources */,
@@ -416,6 +404,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -471,6 +460,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -487,6 +477,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = ARCamRecord/ARCamRecord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -495,6 +486,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ARCamRecord/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "AR Camera Record";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Record video to sync it with 3D file";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Request access to location";
@@ -503,7 +496,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -511,8 +504,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = antillia.ARCamRecord;
+				PRODUCT_BUNDLE_IDENTIFIER = antillia.ARCameraRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -525,6 +521,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = ARCamRecord/ARCamRecord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -533,6 +530,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ARCamRecord/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "AR Camera Record";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Record video to sync it with 3D file";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Request access to location";
@@ -541,7 +540,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "I wanna store AR porn in your Library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -549,8 +548,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = antillia.ARCamRecord;
+				PRODUCT_BUNDLE_IDENTIFIER = antillia.ARCameraRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -579,25 +581,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		5E37B9AE2AF7838100851434 /* XCRemoteSwiftPackageReference "JPSVolumeButtonHandler" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jpsim/JPSVolumeButtonHandler.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		5E37B9AF2AF7838100851434 /* JPSVolumeButtonHandler */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5E37B9AE2AF7838100851434 /* XCRemoteSwiftPackageReference "JPSVolumeButtonHandler" */;
-			productName = JPSVolumeButtonHandler;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F3C3AEAA2A73CB0300F354F9 /* Project object */;
 }

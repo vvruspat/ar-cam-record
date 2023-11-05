@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="landscape" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="852" height="393"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="LaunchScreenBackground" translatesAutoresizingMaskIntoConstraints="NO" id="S0n-An-8ZG">
+                                <rect key="frame" x="0.0" y="0.0" width="852" height="393"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ARCamera" translatesAutoresizingMaskIntoConstraints="NO" id="aaV-Oh-5qj">
+                                <rect key="frame" x="327.66666666666669" y="60" width="196.66666666666669" height="273"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="aaV-Oh-5qj" secondAttribute="height" multiplier="80:111" id="LKD-Na-AUX"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="LaunchBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="S0n-An-8ZG" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="23u-4R-9hb"/>
+                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="60" id="2gO-Jm-6Xu"/>
+                            <constraint firstAttribute="bottom" secondItem="S0n-An-8ZG" secondAttribute="bottom" id="B2n-nk-ewD"/>
+                            <constraint firstItem="S0n-An-8ZG" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Fdg-ZI-q2X"/>
+                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="jAB-Ve-gsU"/>
+                            <constraint firstAttribute="bottom" secondItem="aaV-Oh-5qj" secondAttribute="bottom" constant="60" id="xKd-4m-vFl"/>
+                            <constraint firstAttribute="trailing" secondItem="S0n-An-8ZG" secondAttribute="trailing" id="yF9-aW-iaA"/>
+                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="yfb-EB-b3s"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ARCamera" width="320" height="444"/>
+        <image name="LaunchScreenBackground" width="932" height="430"/>
+        <namedColor name="LaunchBackgroundColor">
+            <color red="0.0" green="0.0080000003799796104" blue="0.063000001013278961" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>
