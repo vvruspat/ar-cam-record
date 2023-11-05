@@ -37,11 +37,11 @@ class ARManager: NSObject, ObservableObject {
     let config = ARWorldTrackingConfiguration()
 
     let supportLidar = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
-
+    
     @Published var isRecording = false
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
-
+    
     override init() {
         arView = ARView(frame: .zero)
         arView.automaticallyConfigureSession = false
@@ -59,7 +59,7 @@ class ARManager: NSObject, ObservableObject {
         sceneToSave.rootNode.addChildNode(cameraNode)
 
         super.init()
-        
+
         config.worldAlignment = .gravityAndHeading
         config.providesAudioData = true
            
@@ -135,6 +135,16 @@ class ARManager: NSObject, ObservableObject {
         videoWriter?.complete();
         lidarWriter?.complete();
         self.saveSCNFileToDisk()
+    }
+    
+    func toggleRecord() {
+        Task {
+            if (isRecording) {
+                self.stopRecording()
+            } else {
+                await self.record()
+            }
+        }
     }
     
     func getDirectory() -> URL? {
