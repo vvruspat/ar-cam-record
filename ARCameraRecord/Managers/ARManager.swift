@@ -35,6 +35,7 @@ class ARManager: NSObject, ObservableObject {
     var sceneToSave = SCNScene()
     var cameraNode = SCNNode()
     let config = ARWorldTrackingConfiguration()
+    var planeDetection = false
 
     let supportLidar = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
     
@@ -71,6 +72,8 @@ class ARManager: NSObject, ObservableObject {
             config.frameSemantics = .sceneDepth
         }
 
+        planeDetection = true
+        
         config.planeDetection = [.horizontal, .vertical]
                 
         if (showLidar) {
@@ -288,6 +291,10 @@ class ARManager: NSObject, ObservableObject {
                     arView.scene.anchors.append(anchor)
                     
                     anchors.append(testResult.first!.worldTransform)
+                    
+                    if planeDetection == true {
+                        stopPlaneDetection()
+                    }
                 }
             }
         }
@@ -371,19 +378,52 @@ extension ARManager : ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-// !!! --- Code alive, dont remove --- !!!
-//        anchors.forEach { anchor in
-//            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
-//                let id = arPlaneAnchor.identifier
-//                if planes.contains(where: {$0.key == id}) {
-//                    print("anchor already exists")
-//                } else {
-//                    let planeAnchorEntity = PlaneAnchorEntity(arPlaneAnchor: arPlaneAnchor)
-//                    arView.scene.anchors.append(planeAnchorEntity)
-//                    planes[id] = planeAnchorEntity
-//                }
-//            }
-//        }
+        anchors.forEach { anchor in
+            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+                let id = arPlaneAnchor.identifier
+                
+                if planes.contains(where: {$0.key == id}) {
+                    print("anchor already exists")
+                } else {
+                    let planeAnchorEntity = PlaneAnchorEntity(arPlaneAnchor: arPlaneAnchor)
+                    
+                    arView.scene.anchors.append(planeAnchorEntity)
+                    
+                    planes[id] = planeAnchorEntity
+                }
+            }
+        }
+    }
+    
+    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
+        anchors.forEach { anchor in
+            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+                let id = arPlaneAnchor.identifier
+                
+                if planes.contains(where: {$0.key == id}) {
+                    do {
+                        try planes[id]?.didUpdate(arPlaneAnchor: arPlaneAnchor)
+                    } catch {
+                        print("Failed to update plane \(id)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func stopPlaneDetection() {
+        guard let config = arView.session.configuration as? ARWorldTrackingConfiguration else {
+            return
+        }
+        
+        // Update the configuration to stop plane detection
+        config.planeDetection = []
+        
+        // Pause the session, apply the updated configuration, and resume
+//        arView.session.pause()
+        arView.session.run(config)
+        
+        planeDetection = false
     }
 
 }

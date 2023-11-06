@@ -23,14 +23,22 @@ class PlaneAnchorEntity: Entity, HasModel, HasAnchoring {
         self.components.set(createModelComponent(arPlaneAnchor))
         self.transform.matrix = arPlaneAnchor.transform
         self.position += arPlaneAnchor.center
-        self.orientation = simd_quatf(angle: arPlaneAnchor.planeExtent.rotationOnYAxis, axis: [0,1,0])
+        
+        if arPlaneAnchor.alignment == .vertical {
+            self.orientation = simd_quatf(angle: -.pi/2, axis: [1,0,0])
+        }
     }
     
     /// Create a model compontent with a planemesh using the size of the provided ARPlaneAnchor.
     private func createModelComponent(_ arPlaneAnchor: ARPlaneAnchor) -> ModelComponent {
         let mesh = MeshResource.generatePlane(width: arPlaneAnchor.planeExtent.width, depth: arPlaneAnchor.planeExtent.height)
-        let material = UnlitMaterial(color: .lightGray.withAlphaComponent(0.5))
+        var material = UnlitMaterial(color: .green.withAlphaComponent(0.5))
+        
+        material.color = try! .init(tint: .white.withAlphaComponent(0.999),
+                                 texture: .init(.load(named: "PlaneTexture")))
+        
         let modelComponent = ModelComponent(mesh: mesh, materials: [material])
+        
         return modelComponent
     }
     
@@ -40,6 +48,5 @@ class PlaneAnchorEntity: Entity, HasModel, HasAnchoring {
         self.model?.mesh = MeshResource.generatePlane(width: arPlaneAnchor.planeExtent.width, depth: arPlaneAnchor.planeExtent.height)
         self.transform.matrix = arPlaneAnchor.transform
         self.position += arPlaneAnchor.center
-        self.orientation = simd_quatf(angle: arPlaneAnchor.planeExtent.rotationOnYAxis, axis: [0,1,0])
     }
 }

@@ -123,9 +123,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5E37B9B32AF8E3F200851434 /* BlenderPy */ = {
+			isa = PBXGroup;
+			children = (
+				5E37B9B42AF8E44000851434 /* Types */,
+			);
+			path = BlenderPy;
+			sourceTree = "<group>";
+		};
+		5E37B9B42AF8E44000851434 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
 		5EC40F642AC31B7E000C94E9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5E37B9B32AF8E3F200851434 /* BlenderPy */,
 				5EC40F852ACC4D99000C94E9 /* Usda */,
 				5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */,
 				5EC40F822ACB7B19000C94E9 /* PlaneAnchorEntity.swift */,
