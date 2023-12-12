@@ -10,7 +10,7 @@ import SwiftUI
 struct AddAnchorButtonView: View {
     @EnvironmentObject var manager: ARManager
     
-    var body: some View {
+    var body: some View {        
         Button {
             manager.addAnchor()
         } label: {

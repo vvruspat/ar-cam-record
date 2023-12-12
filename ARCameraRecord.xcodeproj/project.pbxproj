@@ -11,6 +11,24 @@
 		5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */; };
 		5E2A0F8F2ACD583E005BA504 /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */; };
 		5E2A0F912ACD7ACE005BA504 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E2A0F902ACD7ACE005BA504 /* Launch.storyboard */; };
+		5E37B9B62AFA85F700851434 /* SelectFloorButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9B52AFA85F700851434 /* SelectFloorButtonView.swift */; };
+		5E37B9B82AFA89D000851434 /* ResetFloorSelectionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9B72AFA89D000851434 /* ResetFloorSelectionButtonView.swift */; };
+		5E37B9BA2B051A1B00851434 /* SCNScene.blender.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9B92B051A1B00851434 /* SCNScene.blender.extension.swift */; };
+		5E37B9BC2B051BC100851434 /* SCNNode.blender.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9BB2B051BC100851434 /* SCNNode.blender.extension.swift */; };
+		5E37B9BE2B051F7700851434 /* float4x4.blender.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9BD2B051F7700851434 /* float4x4.blender.extension.swift */; };
+		5E37B9C02B051FC200851434 /* BlenderPyConvertable.protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9BF2B051FC200851434 /* BlenderPyConvertable.protocol.swift */; };
+		5E37B9C22B05203100851434 /* SCNCamera.blender.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9C12B05203100851434 /* SCNCamera.blender.extension.swift */; };
+		5E37B9C62B057A4C00851434 /* BlenderPyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9C52B057A4C00851434 /* BlenderPyUtils.swift */; };
+		5E37B9C82B057AC900851434 /* SIMD3.blender.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9C72B057AC900851434 /* SIMD3.blender.extension.swift */; };
+		5E37B9CC2B0A94C900851434 /* AEConvertable.protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9CB2B0A94C900851434 /* AEConvertable.protocol.swift */; };
+		5E37B9D02B0A951500851434 /* SIMD3.ae.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9CF2B0A951500851434 /* SIMD3.ae.extension.swift */; };
+		5E37B9D22B0A953C00851434 /* SCNCamera.ae.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9D12B0A953C00851434 /* SCNCamera.ae.extension.swift */; };
+		5E37B9D42B0A955600851434 /* SCNScene.ae.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9D32B0A955600851434 /* SCNScene.ae.extension.swift */; };
+		5E37B9D62B0A957200851434 /* SCNNode.ae.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9D52B0A957200851434 /* SCNNode.ae.extension.swift */; };
+		5E37B9DA2B0AA82300851434 /* AEConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9D92B0AA82300851434 /* AEConstants.swift */; };
+		5E37B9DC2B0D260000851434 /* AEUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9DB2B0D260000851434 /* AEUtils.swift */; };
+		5E37B9E82B2732DD00851434 /* OnboardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9E72B2732DD00851434 /* OnboardingManager.swift */; };
+		5E37B9EA2B27430800851434 /* OnboardingTipProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9E92B27430800851434 /* OnboardingTipProtocol.swift */; };
 		5EC40F662AC31BA4000C94E9 /* SCNScene.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */; };
 		5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */; };
 		5EC40F6E2AC9B9FA000C94E9 /* CrosshairButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */; };
@@ -37,6 +55,12 @@
 		5EC40FA12ACC51A7000C94E9 /* String.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40FA02ACC51A7000C94E9 /* String.extension.swift */; };
 		5ECB90002ABFB42000F9DF4D /* ARManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */; };
 		5ECB90032ABFB55200F9DF4D /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECB90022ABFB55200F9DF4D /* ARViewContainer.swift */; };
+		5EFA6BB42B285A6D0000C470 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA6BB32B285A6D0000C470 /* OnboardingView.swift */; };
+		5EFA6BB72B28674D0000C470 /* AnchorOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA6BB62B28674D0000C470 /* AnchorOnboarding.swift */; };
+		5EFA6BB92B2867690000C470 /* MoveOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA6BB82B2867690000C470 /* MoveOnboarding.swift */; };
+		5EFA6BBB2B2867900000C470 /* FloorOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA6BBA2B2867900000C470 /* FloorOnboarding.swift */; };
+		5EFA6BBD2B2868340000C470 /* RecordOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA6BBC2B2868340000C470 /* RecordOnboarding.swift */; };
+		5EFA6BBF2B28686C0000C470 /* SuccessOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA6BBE2B28686C0000C470 /* SuccessOnboarding.swift */; };
 		F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */; };
 		F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB72A73CB0300F354F9 /* ContentView.swift */; };
 		F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */; };
@@ -62,6 +86,24 @@
 		5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeys.swift; sourceTree = "<group>"; };
 		5E2A0F902ACD7ACE005BA504 /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		5E37B9872AF700C500851434 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		5E37B9B52AFA85F700851434 /* SelectFloorButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFloorButtonView.swift; sourceTree = "<group>"; };
+		5E37B9B72AFA89D000851434 /* ResetFloorSelectionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetFloorSelectionButtonView.swift; sourceTree = "<group>"; };
+		5E37B9B92B051A1B00851434 /* SCNScene.blender.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.blender.extension.swift; sourceTree = "<group>"; };
+		5E37B9BB2B051BC100851434 /* SCNNode.blender.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.blender.extension.swift; sourceTree = "<group>"; };
+		5E37B9BD2B051F7700851434 /* float4x4.blender.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = float4x4.blender.extension.swift; sourceTree = "<group>"; };
+		5E37B9BF2B051FC200851434 /* BlenderPyConvertable.protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlenderPyConvertable.protocol.swift; sourceTree = "<group>"; };
+		5E37B9C12B05203100851434 /* SCNCamera.blender.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNCamera.blender.extension.swift; sourceTree = "<group>"; };
+		5E37B9C52B057A4C00851434 /* BlenderPyUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlenderPyUtils.swift; sourceTree = "<group>"; };
+		5E37B9C72B057AC900851434 /* SIMD3.blender.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD3.blender.extension.swift; sourceTree = "<group>"; };
+		5E37B9CB2B0A94C900851434 /* AEConvertable.protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEConvertable.protocol.swift; sourceTree = "<group>"; };
+		5E37B9CF2B0A951500851434 /* SIMD3.ae.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMD3.ae.extension.swift; sourceTree = "<group>"; };
+		5E37B9D12B0A953C00851434 /* SCNCamera.ae.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNCamera.ae.extension.swift; sourceTree = "<group>"; };
+		5E37B9D32B0A955600851434 /* SCNScene.ae.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.ae.extension.swift; sourceTree = "<group>"; };
+		5E37B9D52B0A957200851434 /* SCNNode.ae.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.ae.extension.swift; sourceTree = "<group>"; };
+		5E37B9D92B0AA82300851434 /* AEConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEConstants.swift; sourceTree = "<group>"; };
+		5E37B9DB2B0D260000851434 /* AEUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEUtils.swift; sourceTree = "<group>"; };
+		5E37B9E72B2732DD00851434 /* OnboardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingManager.swift; sourceTree = "<group>"; };
+		5E37B9E92B27430800851434 /* OnboardingTipProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTipProtocol.swift; sourceTree = "<group>"; };
 		5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.extension.swift; sourceTree = "<group>"; };
 		5EC40F672AC8331C000C94E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
@@ -89,6 +131,12 @@
 		5EC40FA02ACC51A7000C94E9 /* String.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.extension.swift; sourceTree = "<group>"; };
 		5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARManager.swift; sourceTree = "<group>"; };
 		5ECB90022ABFB55200F9DF4D /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
+		5EFA6BB32B285A6D0000C470 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		5EFA6BB62B28674D0000C470 /* AnchorOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorOnboarding.swift; sourceTree = "<group>"; };
+		5EFA6BB82B2867690000C470 /* MoveOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveOnboarding.swift; sourceTree = "<group>"; };
+		5EFA6BBA2B2867900000C470 /* FloorOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorOnboarding.swift; sourceTree = "<group>"; };
+		5EFA6BBC2B2868340000C470 /* RecordOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordOnboarding.swift; sourceTree = "<group>"; };
+		5EFA6BBE2B28686C0000C470 /* SuccessOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessOnboarding.swift; sourceTree = "<group>"; };
 		F3C3AEB22A73CB0300F354F9 /* ARCameraRecord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARCameraRecord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C3AEB52A73CB0300F354F9 /* ARCamRecordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCamRecordApp.swift; sourceTree = "<group>"; };
 		F3C3AEB72A73CB0300F354F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -127,6 +175,10 @@
 			isa = PBXGroup;
 			children = (
 				5E37B9B42AF8E44000851434 /* Types */,
+				5E37B9C12B05203100851434 /* SCNCamera.blender.extension.swift */,
+				5E37B9B92B051A1B00851434 /* SCNScene.blender.extension.swift */,
+				5E37B9BB2B051BC100851434 /* SCNNode.blender.extension.swift */,
+				5E37B9C52B057A4C00851434 /* BlenderPyUtils.swift */,
 			);
 			path = BlenderPy;
 			sourceTree = "<group>";
@@ -134,6 +186,31 @@
 		5E37B9B42AF8E44000851434 /* Types */ = {
 			isa = PBXGroup;
 			children = (
+				5E37B9BF2B051FC200851434 /* BlenderPyConvertable.protocol.swift */,
+				5E37B9BD2B051F7700851434 /* float4x4.blender.extension.swift */,
+				5E37B9C72B057AC900851434 /* SIMD3.blender.extension.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
+		5E37B9C92B0A949400851434 /* AE */ = {
+			isa = PBXGroup;
+			children = (
+				5E37B9CA2B0A949F00851434 /* Types */,
+				5E37B9D12B0A953C00851434 /* SCNCamera.ae.extension.swift */,
+				5E37B9D32B0A955600851434 /* SCNScene.ae.extension.swift */,
+				5E37B9D52B0A957200851434 /* SCNNode.ae.extension.swift */,
+				5E37B9D92B0AA82300851434 /* AEConstants.swift */,
+				5E37B9DB2B0D260000851434 /* AEUtils.swift */,
+			);
+			path = AE;
+			sourceTree = "<group>";
+		};
+		5E37B9CA2B0A949F00851434 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				5E37B9CB2B0A94C900851434 /* AEConvertable.protocol.swift */,
+				5E37B9CF2B0A951500851434 /* SIMD3.ae.extension.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -141,10 +218,12 @@
 		5EC40F642AC31B7E000C94E9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5E37B9C92B0A949400851434 /* AE */,
 				5E37B9B32AF8E3F200851434 /* BlenderPy */,
 				5EC40F852ACC4D99000C94E9 /* Usda */,
 				5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */,
 				5EC40F822ACB7B19000C94E9 /* PlaneAnchorEntity.swift */,
+				5E37B9E92B27430800851434 /* OnboardingTipProtocol.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -152,6 +231,7 @@
 		5EC40F6C2AC9B99F000C94E9 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5EFA6BB52B28672C0000C470 /* Onboarding */,
 				5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */,
 				5EC40F702AC9BA56000C94E9 /* ControlsView.swift */,
 				5EC40F722AC9BAA3000C94E9 /* RecordButtonView.swift */,
@@ -159,6 +239,9 @@
 				5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */,
 				5EC40F762AC9BBC0000C94E9 /* HorizonControlView.swift */,
 				5EC40F782AC9BCBE000C94E9 /* LabelledDivider.swift */,
+				5E37B9B52AFA85F700851434 /* SelectFloorButtonView.swift */,
+				5E37B9B72AFA89D000851434 /* ResetFloorSelectionButtonView.swift */,
+				5EFA6BB32B285A6D0000C470 /* OnboardingView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -197,6 +280,7 @@
 			children = (
 				5ECB8FFF2ABFB42000F9DF4D /* ARManager.swift */,
 				5EC40F7A2AC9DB4B000C94E9 /* MotionManager.swift */,
+				5E37B9E72B2732DD00851434 /* OnboardingManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -210,6 +294,18 @@
 				5E2A0F872ACCA867005BA504 /* SettingsView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		5EFA6BB52B28672C0000C470 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				5EFA6BB62B28674D0000C470 /* AnchorOnboarding.swift */,
+				5EFA6BB82B2867690000C470 /* MoveOnboarding.swift */,
+				5EFA6BBA2B2867900000C470 /* FloorOnboarding.swift */,
+				5EFA6BBC2B2868340000C470 /* RecordOnboarding.swift */,
+				5EFA6BBE2B28686C0000C470 /* SuccessOnboarding.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		F3C3AEA92A73CB0300F354F9 = {
@@ -331,36 +427,60 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E37B9B82AFA89D000851434 /* ResetFloorSelectionButtonView.swift in Sources */,
+				5E37B9BC2B051BC100851434 /* SCNNode.blender.extension.swift in Sources */,
 				5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */,
 				5EC40F7B2AC9DB4B000C94E9 /* MotionManager.swift in Sources */,
 				5EC40F8B2ACC4E2D000C94E9 /* USDAUtils.swift in Sources */,
 				5EC40F712AC9BA56000C94E9 /* ControlsView.swift in Sources */,
+				5E37B9BE2B051F7700851434 /* float4x4.blender.extension.swift in Sources */,
+				5E37B9D62B0A957200851434 /* SCNNode.ae.extension.swift in Sources */,
 				5EC40F6E2AC9B9FA000C94E9 /* CrosshairButtonView.swift in Sources */,
+				5E37B9DA2B0AA82300851434 /* AEConstants.swift in Sources */,
+				5EFA6BBD2B2868340000C470 /* RecordOnboarding.swift in Sources */,
+				5E37B9C02B051FC200851434 /* BlenderPyConvertable.protocol.swift in Sources */,
 				5EC40F832ACB7B19000C94E9 /* PlaneAnchorEntity.swift in Sources */,
 				5EC40F9F2ACC519C000C94E9 /* Float.extension.swift in Sources */,
 				5EC40F892ACC4DFD000C94E9 /* SCNCamera.extension.swift in Sources */,
 				5EC40F752AC9BAED000C94E9 /* AddAnchorButtonView.swift in Sources */,
+				5EFA6BBF2B28686C0000C470 /* SuccessOnboarding.swift in Sources */,
 				5EC40F792AC9BCBE000C94E9 /* LabelledDivider.swift in Sources */,
 				5EC40F872ACC4DC6000C94E9 /* SCNNode.extension.swift in Sources */,
+				5EFA6BB92B2867690000C470 /* MoveOnboarding.swift in Sources */,
+				5E37B9C82B057AC900851434 /* SIMD3.blender.extension.swift in Sources */,
 				5EC40F8D2ACC4E7D000C94E9 /* SCNGeometry.extension.swift in Sources */,
 				5ECB90002ABFB42000F9DF4D /* ARManager.swift in Sources */,
+				5E37B9C62B057A4C00851434 /* BlenderPyUtils.swift in Sources */,
+				5E37B9D42B0A955600851434 /* SCNScene.ae.extension.swift in Sources */,
 				F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */,
 				5EC40F9B2ACC5186000C94E9 /* Bool.extension.swift in Sources */,
+				5EFA6BBB2B2867900000C470 /* FloorOnboarding.swift in Sources */,
+				5E37B9B62AFA85F700851434 /* SelectFloorButtonView.swift in Sources */,
 				F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */,
 				5EC40F9D2ACC518F000C94E9 /* Int.extension.swift in Sources */,
 				5E2A0F882ACCA867005BA504 /* SettingsView.swift in Sources */,
+				5E37B9EA2B27430800851434 /* OnboardingTipProtocol.swift in Sources */,
 				5EC40F772AC9BBC0000C94E9 /* HorizonControlView.swift in Sources */,
+				5E37B9CC2B0A94C900851434 /* AEConvertable.protocol.swift in Sources */,
+				5EFA6BB72B28674D0000C470 /* AnchorOnboarding.swift in Sources */,
 				5EC40F942ACC4F2F000C94E9 /* SIMD2.extension.swift in Sources */,
+				5E37B9C22B05203100851434 /* SCNCamera.blender.extension.swift in Sources */,
 				5EC40F902ACC4EBF000C94E9 /* float4x4.extension.swift in Sources */,
+				5E37B9D22B0A953C00851434 /* SCNCamera.ae.extension.swift in Sources */,
 				5EC40F922ACC4EE4000C94E9 /* Array.extension.swift in Sources */,
+				5E37B9D02B0A951500851434 /* SIMD3.ae.extension.swift in Sources */,
 				5E2A0F8F2ACD583E005BA504 /* SettingsKeys.swift in Sources */,
 				5EC40F992ACC4F93000C94E9 /* USDAConvertable.protocol.swift in Sources */,
 				5EC40FA12ACC51A7000C94E9 /* String.extension.swift in Sources */,
+				5E37B9E82B2732DD00851434 /* OnboardingManager.swift in Sources */,
 				5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */,
 				5EC40F662AC31BA4000C94E9 /* SCNScene.extension.swift in Sources */,
+				5E37B9DC2B0D260000851434 /* AEUtils.swift in Sources */,
 				5ECB90032ABFB55200F9DF4D /* ARViewContainer.swift in Sources */,
+				5E37B9BA2B051A1B00851434 /* SCNScene.blender.extension.swift in Sources */,
 				5EC40F732AC9BAA3000C94E9 /* RecordButtonView.swift in Sources */,
 				5EC40F962ACC4F48000C94E9 /* SIMD3.extension.swift in Sources */,
+				5EFA6BB42B285A6D0000C470 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +634,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -558,6 +679,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

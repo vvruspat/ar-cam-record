@@ -17,6 +17,8 @@ class ARManager: NSObject, ObservableObject {
 
     static let shared = ARManager()
     
+    var onboardingManager = OnboardingManager.shared
+    
     let arView: ARView
     var cameraTransforms = MDLTransform()
     var initTransform = matrix_float4x4([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
@@ -36,10 +38,16 @@ class ARManager: NSObject, ObservableObject {
     var cameraNode = SCNNode()
     let config = ARWorldTrackingConfiguration()
     var planeDetection = false
+    
+    @Published var isFloorDetected = false
+    
+    var highlightedPlane: UUID?
+    var selectedFloorPlane: UUID?
 
     let supportLidar = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
     
     @Published var isRecording = false
+    
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     
@@ -61,7 +69,7 @@ class ARManager: NSObject, ObservableObject {
 
         super.init()
 
-        config.worldAlignment = .gravityAndHeading
+        config.worldAlignment = .gravity
         config.providesAudioData = true
            
         if let hiResFormat = ARWorldTrackingConfiguration.recommendedVideoFormatFor4KResolution {
@@ -74,7 +82,7 @@ class ARManager: NSObject, ObservableObject {
 
         planeDetection = true
         
-        config.planeDetection = [.horizontal, .vertical]
+        config.planeDetection = [.horizontal]
                 
         if (showLidar) {
             config.sceneReconstruction = .meshWithClassification
@@ -88,6 +96,8 @@ class ARManager: NSObject, ObservableObject {
         fps = Float(config.videoFormat.framesPerSecond)
         
         arView.session.delegate = self
+        
+        onboardingManager.goToStep(step: .move)
     }
     
     deinit {
@@ -103,6 +113,7 @@ class ARManager: NSObject, ObservableObject {
     }
     
     func record () async {
+        
         let session = await self.arView.session
         
         self.filename = "ar-captured-\(Int(Date.now.timeIntervalSince1970))"
@@ -130,6 +141,7 @@ class ARManager: NSObject, ObservableObject {
             self.setInitialPosition()
             self.startAnimation = self.cameraTransforms.keyTimes.count
             self.isRecording = true
+            self.onboardingManager.goToStep(step: nil)
         }
     }
     
@@ -207,13 +219,21 @@ class ARManager: NSObject, ObservableObject {
             index += 1
         }
         
+        let animation: KeyframeAnimation = [
+            "CameraNode": cameraTransforms
+        ]
+        
         if let path = getTmpPathToSave("\(self.filename).usda") {
-            let animation: KeyframeAnimation = [
-                "CameraNode": cameraTransforms
-            ]
-            
             sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
         }
+        
+        if let path = getTmpPathToSave("\(self.filename).blender.py") {
+            sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps)
+        }
+        
+//        if let path = getTmpPathToSave("\(self.filename).ae.js") {
+//            sceneToSave.writeToAE(url: path, animation: animation, fps: self.fps)
+//        }
         
         finalizeSave()
     }
@@ -256,12 +276,24 @@ class ARManager: NSObject, ObservableObject {
     func finalizeSave() {
         let folderToMove = createAppFolder()
         
-        // Move Project
+        // Move usda
         if let tmpPath = getTmpPathToSave("\(self.filename).usda"),
            let path = getPathToSave("\(self.filename).usda", folder: folderToMove) {
             moveFile(from: tmpPath, to: path)
         }
         
+        // Move python script
+        if let tmpPath = getTmpPathToSave("\(self.filename).blender.py"),
+           let path = getPathToSave("\(self.filename).blender.py", folder: folderToMove) {
+            moveFile(from: tmpPath, to: path)
+        }
+        
+//        // Move ae script
+//        if let tmpPath = getTmpPathToSave("\(self.filename).ae.js"),
+//           let path = getPathToSave("\(self.filename).ae.js", folder: folderToMove) {
+//            moveFile(from: tmpPath, to: path)
+//        }
+
         // Move Video
         if let path = getPathToSave("\(self.filename).mov", folder: folderToMove),
            let tmpPath = videoWriter?.url {
@@ -295,6 +327,8 @@ class ARManager: NSObject, ObservableObject {
                     if planeDetection == true {
                         stopPlaneDetection()
                     }
+                    
+                    onboardingManager.goToStep(step: .record)
                 }
             }
         }
@@ -351,6 +385,54 @@ extension ARManager : ARSessionDelegate {
         } else {
             updateCameraPosition(frame)
         }
+        
+        highlightFloorPlane()
+    }
+    
+    func highlightFloorPlane() {
+        if !isFloorDetected {
+            let testResult = arView.hitTest(arView.center, types: .existingPlaneUsingExtent)
+            
+            if let id = testResult.first?.anchor?.identifier {
+                if let plane = planes[id] {
+                    if highlightedPlane != nil {
+                        planes[highlightedPlane!]?.deselect()
+                    }
+                    
+                    highlightedPlane = id
+                    plane.highlight()
+                }
+            }
+
+        }
+    }
+    
+    func selectFloorPlane() {
+        guard highlightedPlane != nil else { return }
+        
+        if let plane = planes[highlightedPlane!] {
+            if selectedFloorPlane != nil {
+                planes[selectedFloorPlane!]?.deselect()
+            }
+            
+            selectedFloorPlane = highlightedPlane
+            isFloorDetected = true
+            stopPlaneDetection()
+            plane.select()
+            
+            onboardingManager.goToStep(step: .anchor)
+        }
+    }
+    
+    func resetFloorSelection() {
+        guard selectedFloorPlane != nil else { return }
+
+        if let plane = planes[selectedFloorPlane!] {
+            plane.deselect()
+            selectedFloorPlane = nil
+            isFloorDetected = false
+            startPlaneDetection()
+        }
     }
     
     // Converting pixel format from lidar to bgra
@@ -378,6 +460,62 @@ extension ARManager : ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+        if planeDetection == false {
+            return
+        }
+        
+        anchors.forEach { anchor in
+            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+                
+                onboardingManager.goToStep(step: .floor)
+                
+                let id = arPlaneAnchor.identifier
+                
+                if arPlaneAnchor.classification == .floor && isFloorDetected {
+                    return
+                }
+                    
+                if planes.contains(where: {$0.key == id}) {
+                    print("anchor already exists")
+                } else {
+                    let planeAnchorEntity = PlaneAnchorEntity(arPlaneAnchor: arPlaneAnchor)
+                    
+                    arView.scene.anchors.append(planeAnchorEntity)
+                    
+                    planes[id] = planeAnchorEntity
+                }
+            }
+        }
+    }
+    
+    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
+        if planeDetection == false {
+            return
+        }
+        
+        anchors.forEach { anchor in
+            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+                let id = arPlaneAnchor.identifier
+                
+                if planes.contains(where: {$0.key == id}) {
+                    do {
+                        try planes[id]?.didUpdate(arPlaneAnchor: arPlaneAnchor)
+                    } catch {
+                        print("Failed to update plane \(id)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
+        if planeDetection == false {
+            return
+        }
+        
+        arView.scene.anchors.removeAll()
+        planes.removeAll()
+        
         anchors.forEach { anchor in
             if let arPlaneAnchor = anchor as? ARPlaneAnchor {
                 let id = arPlaneAnchor.identifier
@@ -395,22 +533,6 @@ extension ARManager : ARSessionDelegate {
         }
     }
     
-    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-        anchors.forEach { anchor in
-            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
-                let id = arPlaneAnchor.identifier
-                
-                if planes.contains(where: {$0.key == id}) {
-                    do {
-                        try planes[id]?.didUpdate(arPlaneAnchor: arPlaneAnchor)
-                    } catch {
-                        print("Failed to update plane \(id)")
-                    }
-                }
-            }
-        }
-    }
-    
     func stopPlaneDetection() {
         guard let config = arView.session.configuration as? ARWorldTrackingConfiguration else {
             return
@@ -419,11 +541,23 @@ extension ARManager : ARSessionDelegate {
         // Update the configuration to stop plane detection
         config.planeDetection = []
         
-        // Pause the session, apply the updated configuration, and resume
-//        arView.session.pause()
+        // Apply the updated configuration
         arView.session.run(config)
         
         planeDetection = false
     }
-
+    
+    func startPlaneDetection() {
+        guard let config = arView.session.configuration as? ARWorldTrackingConfiguration else {
+            return
+        }
+        
+        // Update the configuration to stop plane detection
+        config.planeDetection = [.vertical, .horizontal]
+        
+        // Apply the updated configuration
+        arView.session.run(config)
+        
+        planeDetection = true
+    }
 }

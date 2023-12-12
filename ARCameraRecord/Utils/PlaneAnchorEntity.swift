@@ -49,4 +49,25 @@ class PlaneAnchorEntity: Entity, HasModel, HasAnchoring {
         self.transform.matrix = arPlaneAnchor.transform
         self.position += arPlaneAnchor.center
     }
+    
+    func highlight() {
+        self.setTexture("PlaneTextureHighlighted")
+    }
+    
+    func select() {
+        self.setTexture("PlaneTextureSelected")
+    }
+    
+    func deselect() {
+        self.setTexture("PlaneTexture")
+    }
+    
+    func setTexture(_ name: String) {
+        var material = UnlitMaterial(color: .white.withAlphaComponent(0.5))
+        
+        material.color = try! .init(tint: .white.withAlphaComponent(0.999),
+                                 texture: .init(.load(named: name)))
+        
+        self.model?.materials = [material]
+    }
 }
