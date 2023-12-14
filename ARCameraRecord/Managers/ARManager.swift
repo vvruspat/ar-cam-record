@@ -82,8 +82,9 @@ class ARManager: NSObject, ObservableObject {
 
         planeDetection = true
         
-        config.planeDetection = [.horizontal]
-                
+        config.planeDetection = [.horizontal, .vertical]
+        arView.contentScaleFactor = 1
+
         if (showLidar) {
             config.sceneReconstruction = .meshWithClassification
             arView.debugOptions.insert(.showSceneUnderstanding)
@@ -309,25 +310,31 @@ class ARManager: NSObject, ObservableObject {
     }
     
     func addAnchor() {
-        let testResult = arView.hitTest(arView.center, types: .existingPlaneUsingExtent)
+        let testResult = arView.hitTest(arView.center, types: .existingPlane)
         
         if (testResult.isEmpty) {
             print("No plane detected")
         } else {
             if let anchor = try? Entity.loadAnchor(named: "axis") {
-                if let columns = testResult.first?.worldTransform.columns.3 {
-                    let position = SIMD3(x: columns.x, y: columns.y, z: columns.z)
-                    
-                    anchor.setPosition(position, relativeTo: nil)
-                    arView.scene.anchors.append(anchor)
-                    
-                    anchors.append(testResult.first!.worldTransform)
-                    
-                    if planeDetection == true {
-                        stopPlaneDetection()
+                
+                testResult.forEach { result in
+                    if let id = result.anchor?.identifier {
+                        if highlightedPlane == id {
+                            let columns = result.worldTransform.columns.3
+                            let position = SIMD3(x: columns.x, y: columns.y, z: columns.z)
+                            
+                            anchor.setPosition(position, relativeTo: nil)
+                            arView.scene.anchors.append(anchor)
+                            
+                            anchors.append(testResult.first!.worldTransform)
+                            
+                            if planeDetection == true {
+                                stopPlaneDetection()
+                            }
+                            
+                            onboardingManager.goToStep(step: .record)
+                        }
                     }
-                    
-                    onboardingManager.goToStep(step: .record)
                 }
             }
         }
@@ -353,7 +360,7 @@ extension ARManager : ARSessionDelegate {
             
             if recordLidar {
                 // recording LiDAR video
-                if let depthMap = frame.sceneDepth?.depthMap {
+                if let depthMap = frame.smoothedSceneDepth?.depthMap {
                     let dataImage = CIImage(cvPixelBuffer: depthMap)
                     var pixelBuffer: CVPixelBuffer?
                     
@@ -378,9 +385,9 @@ extension ARManager : ARSessionDelegate {
     }
     
     func drawDistanceToCenter() {
-        let testResult = arView.hitTest(arView.center, types: .featurePoint)
+        let testResult = arView.hitTest(arView.center, types: .existingPlaneUsingGeometry)
         
-        distance = Double(testResult.last?.distance ?? 0.0)
+        distance = Double(testResult.first?.distance ?? 0.0)
     }
     
     func highlightFloorPlane() {
@@ -404,6 +411,10 @@ extension ARManager : ARSessionDelegate {
     func selectFloorPlane() {
         guard highlightedPlane != nil else { return }
         
+        planes.forEach { id, plane in
+            plane.makeOpacity()
+        }
+        
         if let plane = planes[highlightedPlane!] {
             if selectedFloorPlane != nil {
                 planes[selectedFloorPlane!]?.deselect()
@@ -421,8 +432,11 @@ extension ARManager : ARSessionDelegate {
     func resetFloorSelection() {
         guard selectedFloorPlane != nil else { return }
 
-        if let plane = planes[selectedFloorPlane!] {
+        planes.forEach { id, plane in
             plane.deselect()
+        }
+        
+        if let plane = planes[selectedFloorPlane!] {
             selectedFloorPlane = nil
             isFloorDetected = false
             startPlaneDetection()

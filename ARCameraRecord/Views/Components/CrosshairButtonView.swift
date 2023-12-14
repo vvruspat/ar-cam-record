@@ -18,7 +18,7 @@ struct CrosshairButtonView: View {
             } label: {
                 VStack {
                     Image(systemName: "plus").font(.system(size: 48)).tint(.white.opacity(0.6))
-                    Text(String(format: "%.1f m", manager.distance))
+                    Text(String(format: "%.1f m", manager.distance)).foregroundStyle(Color("DistanceColor"))
                 }
             }
             Spacer()

@@ -62,6 +62,10 @@ class PlaneAnchorEntity: Entity, HasModel, HasAnchoring {
         self.setTexture("PlaneTexture")
     }
     
+    func makeOpacity() {
+        self.setTexture("PlaneTextureWithOpacity")
+    }
+    
     func setTexture(_ name: String) {
         var material = UnlitMaterial(color: .white.withAlphaComponent(0.5))
         
