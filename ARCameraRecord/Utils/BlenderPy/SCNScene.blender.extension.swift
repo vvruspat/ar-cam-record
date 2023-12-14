@@ -14,7 +14,7 @@ extension SCNScene {
         blenderPyData += "bpy.context.scene.frame_end = \(animation["CameraNode"]?.keyTimes.count ?? 1)\n"
         blenderPyData += "bpy.context.scene.render.fps = \(Int(fps))\n"
 
-        blenderPyData += "\t" + self.rootNode.toBlenderPyNode(animation)
+        blenderPyData += self.rootNode.toBlenderPyNode(animation)
         
         return blenderPyData
     }

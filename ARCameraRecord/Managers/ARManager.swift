@@ -21,7 +21,6 @@ class ARManager: NSObject, ObservableObject {
     
     let arView: ARView
     var cameraTransforms = MDLTransform()
-    var initTransform = matrix_float4x4([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
     var anchors: [simd_float4x4] = []
     var timer: Timer?
     var counter = 0
@@ -40,6 +39,7 @@ class ARManager: NSObject, ObservableObject {
     var planeDetection = false
     
     @Published var isFloorDetected = false
+    @Published var distance = 0.0
     
     var highlightedPlane: UUID?
     var selectedFloorPlane: UUID?
@@ -138,7 +138,6 @@ class ARManager: NSObject, ObservableObject {
         }
         
         DispatchQueue.main.async {
-            self.setInitialPosition()
             self.startAnimation = self.cameraTransforms.keyTimes.count
             self.isRecording = true
             self.onboardingManager.goToStep(step: nil)
@@ -211,7 +210,7 @@ class ARManager: NSObject, ObservableObject {
         anchors.forEach { element in
             let node = SCNNode();
             
-            node.setWorldTransform(SCNMatrix4(element))
+            node.transform = SCNMatrix4(element)
             node.name = "Anchor\(index)"
             
             sceneToSave.rootNode.addChildNode(node)
@@ -334,10 +333,6 @@ class ARManager: NSObject, ObservableObject {
         }
     }
     
-    func setInitialPosition() {
-        cameraTransforms.setMatrix(initTransform, forTime: 0)
-    }
-    
     func updateCameraTransform(_ frame: ARFrame) {
         let transform = frame.camera.transform
         let rotation = frame.camera.eulerAngles
@@ -346,12 +341,6 @@ class ARManager: NSObject, ObservableObject {
         
         cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
         cameraTransforms.setRotation(rotation, forTime: elapsedTime)
-    }
-    
-    func updateCameraPosition(_ frame: ARFrame) {
-        let transform = frame.camera.transform
-
-        initTransform = initTransform * transform
     }
 }
 
@@ -382,11 +371,16 @@ extension ARManager : ARSessionDelegate {
                     print("Nothing to record from LiDAR")
                 }
             }
-        } else {
-            updateCameraPosition(frame)
         }
         
         highlightFloorPlane()
+        drawDistanceToCenter()
+    }
+    
+    func drawDistanceToCenter() {
+        let testResult = arView.hitTest(arView.center, types: .featurePoint)
+        
+        distance = Double(testResult.last?.distance ?? 0.0)
     }
     
     func highlightFloorPlane() {

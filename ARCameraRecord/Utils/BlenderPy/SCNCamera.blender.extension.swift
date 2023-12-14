@@ -6,6 +6,7 @@
 //
 
 import SceneKit
+import AVFoundation
 
 extension SCNCamera {
     func toBlenderPyCamera(_ animation: KeyframeAnimation, _ name: String) -> String {

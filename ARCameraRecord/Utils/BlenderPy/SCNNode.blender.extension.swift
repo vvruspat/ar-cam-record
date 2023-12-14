@@ -16,6 +16,7 @@ extension SCNNode {
         } else {
             blenderPyNode += "bpy.ops.object.empty_add(location=\(SIMD3(self.position.x, self.position.y, self.position.z).toBlenderPy()))\n"
             blenderPyNode += "anchor = bpy.context.object\n"
+            blenderPyNode += "anchor.empty_display_type = 'ARROWS'"
             blenderPyNode += "anchor.name = \"\(self.name?.replacingOccurrences(of: " ", with: "") ?? "Anchor\(Int.random(in: 0...100))")\"\n"
         }
         

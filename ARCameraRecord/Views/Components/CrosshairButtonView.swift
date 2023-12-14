@@ -16,7 +16,10 @@ struct CrosshairButtonView: View {
             Button {
                 manager.addAnchor()
             } label: {
-                Image(systemName: "plus").font(.system(size: 48)).tint(.white.opacity(0.6))
+                VStack {
+                    Image(systemName: "plus").font(.system(size: 48)).tint(.white.opacity(0.6))
+                    Text(String(format: "%.1f m", manager.distance))
+                }
             }
             Spacer()
         }
