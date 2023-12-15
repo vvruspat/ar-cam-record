@@ -222,13 +222,13 @@ class ARManager: NSObject, ObservableObject {
             "CameraNode": cameraTransforms
         ]
         
-        if let path = getTmpPathToSave("\(self.filename).usda") {
-            sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
-        }
-        
         if let path = getTmpPathToSave("\(self.filename).blender.py") {
             sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps, videoFileName: "\(self.filename).mov")
         }
+        
+//        if let path = getTmpPathToSave("\(self.filename).usda") {
+//            sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
+//        }
         
 //        if let path = getTmpPathToSave("\(self.filename).ae.js") {
 //            sceneToSave.writeToAE(url: path, animation: animation, fps: self.fps)
@@ -276,16 +276,10 @@ class ARManager: NSObject, ObservableObject {
         let folderToMove = createAppFolder()
         
         // Move usda
-        if let tmpPath = getTmpPathToSave("\(self.filename).usda"),
-           let path = getPathToSave("\(self.filename).usda", folder: folderToMove) {
-            moveFile(from: tmpPath, to: path)
-        }
-        
-        // Move python script
-        if let tmpPath = getTmpPathToSave("\(self.filename).blender.py"),
-           let path = getPathToSave("\(self.filename).blender.py", folder: folderToMove) {
-            moveFile(from: tmpPath, to: path)
-        }
+//        if let tmpPath = getTmpPathToSave("\(self.filename).usda"),
+//           let path = getPathToSave("\(self.filename).usda", folder: folderToMove) {
+//            moveFile(from: tmpPath, to: path)
+//        }
         
 //        // Move ae script
 //        if let tmpPath = getTmpPathToSave("\(self.filename).ae.js"),
@@ -293,6 +287,12 @@ class ARManager: NSObject, ObservableObject {
 //            moveFile(from: tmpPath, to: path)
 //        }
 
+        // Move python script
+        if let tmpPath = getTmpPathToSave("\(self.filename).blender.py"),
+           let path = getPathToSave("\(self.filename).blender.py", folder: folderToMove) {
+            moveFile(from: tmpPath, to: path)
+        }
+        
         // Move Video
         if let path = getPathToSave("\(self.filename).mov", folder: folderToMove),
            let tmpPath = videoWriter?.url {
@@ -345,9 +345,6 @@ class ARManager: NSObject, ObservableObject {
         let position = transform.columns.3
         let elapsedTime = frame.timestamp
         
-        print(frame.camera.imageResolution)
-        print(frame.camera.intrinsics)
-        
         cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
         cameraTransforms.setRotation(rotation, forTime: elapsedTime)
     }
@@ -362,7 +359,7 @@ extension ARManager : ARSessionDelegate {
             
             if recordLidar {
                 // recording LiDAR video
-                if let depthMap = frame.smoothedSceneDepth?.depthMap {
+                if let depthMap = frame.sceneDepth?.depthMap {
                     let dataImage = CIImage(cvPixelBuffer: depthMap)
                     var pixelBuffer: CVPixelBuffer?
                     
