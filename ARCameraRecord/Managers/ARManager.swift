@@ -13,9 +13,9 @@ import SwiftUI
 
 class ARManager: NSObject, ObservableObject {
 
-    var planes = [UUID: PlaneAnchorEntity]()
-
     static let shared = ARManager()
+    
+    var planes = [UUID: PlaneAnchorEntity]()
     
     var onboardingManager = OnboardingManager.shared
     
@@ -38,15 +38,14 @@ class ARManager: NSObject, ObservableObject {
     let config = ARWorldTrackingConfiguration()
     var planeDetection = false
     
-    @Published var isFloorDetected = false
-    @Published var distance = 0.0
-    
     var highlightedPlane: UUID?
     var selectedFloorPlane: UUID?
 
     let supportLidar = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
     
     @Published var isRecording = false
+    @Published var isFloorDetected = false
+    @Published var distance = 0.0
     
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
@@ -228,7 +227,7 @@ class ARManager: NSObject, ObservableObject {
         }
         
         if let path = getTmpPathToSave("\(self.filename).blender.py") {
-            sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps)
+            sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps, videoFileName: "\(self.filename).mov")
         }
         
 //        if let path = getTmpPathToSave("\(self.filename).ae.js") {
@@ -346,6 +345,9 @@ class ARManager: NSObject, ObservableObject {
         let position = transform.columns.3
         let elapsedTime = frame.timestamp
         
+        print(frame.camera.imageResolution)
+        print(frame.camera.intrinsics)
+        
         cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
         cameraTransforms.setRotation(rotation, forTime: elapsedTime)
     }
@@ -436,11 +438,9 @@ extension ARManager : ARSessionDelegate {
             plane.deselect()
         }
         
-        if let plane = planes[selectedFloorPlane!] {
-            selectedFloorPlane = nil
-            isFloorDetected = false
-            startPlaneDetection()
-        }
+        selectedFloorPlane = nil
+        isFloorDetected = false
+        startPlaneDetection()
     }
     
     // Converting pixel format from lidar to bgra

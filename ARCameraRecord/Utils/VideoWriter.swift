@@ -170,7 +170,7 @@ public class VideoWriter: NSObject, ObservableObject {
      
     func startAudioRecording() {
         
-        let microphone = AVCaptureDevice.default(.builtInMicrophone, for: AVMediaType.audio, position: .unspecified)
+        let microphone = AVCaptureDevice.default(.microphone, for: AVMediaType.audio, position: .unspecified)
         
         do {
             try self.micInput = AVCaptureDeviceInput(device: microphone!);
