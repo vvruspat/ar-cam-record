@@ -52,6 +52,19 @@ class ARManager: NSObject, ObservableObject {
     
     override init() {
         arView = ARView(frame: .zero)
+        
+        super.init()
+        
+        UserDefaults.standard.addObserver(self, forKeyPath: SettingsKeys.showLidar, options: .new, context: nil)
+        
+        setup()
+    }
+    
+    deinit {
+        UserDefaults.standard.removeObserver(self, forKeyPath: SettingsKeys.showLidar)
+    }
+    
+    func setup() {
         arView.automaticallyConfigureSession = false
         
         sceneToSave.rootNode.position = SCNVector3(0, 0, 0)
@@ -65,8 +78,6 @@ class ARManager: NSObject, ObservableObject {
         cameraNode.name = "CameraNode"
 
         sceneToSave.rootNode.addChildNode(cameraNode)
-
-        super.init()
 
         config.worldAlignment = .gravity
         config.providesAudioData = true
@@ -88,20 +99,38 @@ class ARManager: NSObject, ObservableObject {
             config.sceneReconstruction = .meshWithClassification
             arView.debugOptions.insert(.showSceneUnderstanding)
         }
-        
-        UserDefaults.standard.addObserver(self, forKeyPath: SettingsKeys.showLidar, options: .new, context: nil)
 
-        arView.session.run(config)
+        arView.session.delegate = self
+        arView.scene.anchors.removeAll()
+        
+        arView.session.run(config, options: [.resetTracking, .resetSceneReconstruction, .removeExistingAnchors])
         
         fps = Float(config.videoFormat.framesPerSecond)
         
-        arView.session.delegate = self
         
         onboardingManager.goToStep(step: .move)
     }
     
-    deinit {
-        UserDefaults.standard.removeObserver(self, forKeyPath: SettingsKeys.showLidar)
+    func reset() {
+        planes.removeAll()
+        anchors.removeAll()
+        cameraTransforms = MDLTransform()
+        counter = 0
+        timeStart = nil
+
+        startAnimation = 1
+
+        sceneToSave = SCNScene()
+        cameraNode = SCNNode()
+        planeDetection = false
+        
+        highlightedPlane = nil
+        selectedFloorPlane = nil
+        
+        isFloorDetected = false
+        distance = 0.0
+        
+        setup()
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -508,31 +537,6 @@ extension ARManager : ARSessionDelegate {
                     } catch {
                         print("Failed to update plane \(id)")
                     }
-                }
-            }
-        }
-    }
-    
-    func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
-        if planeDetection == false {
-            return
-        }
-        
-        arView.scene.anchors.removeAll()
-        planes.removeAll()
-        
-        anchors.forEach { anchor in
-            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
-                let id = arPlaneAnchor.identifier
-                
-                if planes.contains(where: {$0.key == id}) {
-                    print("anchor already exists")
-                } else {
-                    let planeAnchorEntity = PlaneAnchorEntity(arPlaneAnchor: arPlaneAnchor)
-                    
-                    arView.scene.anchors.append(planeAnchorEntity)
-                    
-                    planes[id] = planeAnchorEntity
                 }
             }
         }

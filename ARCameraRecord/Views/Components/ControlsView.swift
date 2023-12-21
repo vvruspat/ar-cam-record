@@ -30,6 +30,8 @@ struct ControlsView: View {
                         }
                         
                         Spacer()
+                        
+                        ResetAllButtonView()
                     }
                 }
                 Spacer()
