@@ -19,7 +19,7 @@ class ARManager: NSObject, ObservableObject {
     
     var onboardingManager = OnboardingManager.shared
     
-    let arView: ARView
+    var arView: ARView
     var cameraTransforms = MDLTransform()
     var anchors: [simd_float4x4] = []
     var timer: Timer?
@@ -65,6 +65,8 @@ class ARManager: NSObject, ObservableObject {
     }
     
     func setup() {
+        arView.session.pause()
+        
         arView.automaticallyConfigureSession = false
         
         sceneToSave.rootNode.position = SCNVector3(0, 0, 0)
@@ -101,17 +103,16 @@ class ARManager: NSObject, ObservableObject {
         }
 
         arView.session.delegate = self
-        arView.scene.anchors.removeAll()
         
         arView.session.run(config, options: [.resetTracking, .resetSceneReconstruction, .removeExistingAnchors])
         
         fps = Float(config.videoFormat.framesPerSecond)
         
-        
         onboardingManager.goToStep(step: .move)
     }
     
     func reset() {
+        arView.scene.anchors.removeAll()
         planes.removeAll()
         anchors.removeAll()
         cameraTransforms = MDLTransform()
@@ -343,7 +344,7 @@ class ARManager: NSObject, ObservableObject {
         if (testResult.isEmpty) {
             print("No plane detected")
         } else {
-            if let anchor = try? Entity.loadAnchor(named: "axis") {
+            if let anchorEntity = try? Entity.loadAnchor(named: "axis") {
                 
                 testResult.forEach { result in
                     if let id = result.anchor?.identifier {
@@ -351,8 +352,15 @@ class ARManager: NSObject, ObservableObject {
                             let columns = result.worldTransform.columns.3
                             let position = SIMD3(x: columns.x, y: columns.y, z: columns.z)
                             
-                            anchor.setPosition(position, relativeTo: nil)
-                            arView.scene.anchors.append(anchor)
+                            anchorEntity.setPosition(position, relativeTo: nil)
+                            
+                            let anchor = AnchorEntity(world: anchorEntity.position)
+                            anchor.addChild(anchorEntity)
+                            
+                            // Add the anchor to the ARView's scene
+                            arView.scene.addAnchor(anchor)
+                            
+//                            arView.scene.anchors.append(anchor)
                             
                             anchors.append(testResult.first!.worldTransform)
                             
@@ -407,6 +415,8 @@ extension ARManager : ARSessionDelegate {
                 }
             }
         }
+        
+//        print(arView.scene.anchors.count)
         
         highlightFloorPlane()
         drawDistanceToCenter()
@@ -497,7 +507,7 @@ extension ARManager : ARSessionDelegate {
         if planeDetection == false {
             return
         }
-        
+          
         anchors.forEach { anchor in
             if let arPlaneAnchor = anchor as? ARPlaneAnchor {
                 
