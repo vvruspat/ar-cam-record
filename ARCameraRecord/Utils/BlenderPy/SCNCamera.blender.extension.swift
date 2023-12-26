@@ -30,15 +30,15 @@ extension SCNCamera {
         
         if let nodeAnimation = animation[name] {
             
-            result += "camera.data.background_images.clear()\n"
-            result += "bg_image = camera.data.background_images.new()\n"
-            result += "bg_image.image = background_image\n"
-            result += "bg_image.frame_method = 'STRETCH'\n"
-            result += "bg_image.alpha = 1.0\n"
-            result += "bg_image.scale = 1.0\n"
-            result += "bg_image.image_user.frame_duration = \(nodeAnimation.keyTimes.count)\n"
-            result += "bg_image.image_user.use_auto_refresh = True\n"
-            result += "camera.data.show_background_images = True\n"
+//            result += "camera.data.background_images.clear()\n"
+//            result += "bg_image = camera.data.background_images.new()\n"
+//            result += "bg_image.image = background_image\n"
+//            result += "bg_image.frame_method = 'STRETCH'\n"
+//            result += "bg_image.alpha = 1.0\n"
+//            result += "bg_image.scale = 1.0\n"
+//            result += "bg_image.image_user.frame_duration = \(nodeAnimation.keyTimes.count)\n"
+//            result += "bg_image.image_user.use_auto_refresh = True\n"
+//            result += "camera.data.show_background_images = True\n"
 
             var index = 0
             var rotations = ""
