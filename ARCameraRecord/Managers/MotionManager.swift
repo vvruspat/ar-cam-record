@@ -10,9 +10,6 @@ import CoreMotion
 
 class MotionManager: ObservableObject {
     @Published var pitch = 0.0
-//    @Published var roll = 0.0
-//    @Published var yaw = 0.0
-    
     static var shared = MotionManager()
     
     private var motionManager: CMMotionManager!
@@ -29,8 +26,6 @@ class MotionManager: ObservableObject {
     func update() {
         if let deviceMotion = motionManager.deviceMotion {
             self.pitch = deviceMotion.attitude.pitch * (180 / Double.pi)
-//            self.roll = deviceMotion.attitude.roll * (180 / Double.pi)
-//            self.yaw = deviceMotion.attitude.yaw * (180 / Double.pi)
         }
     }
 }
