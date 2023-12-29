@@ -28,7 +28,6 @@
 		5E37B9DA2B0AA82300851434 /* AEConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9D92B0AA82300851434 /* AEConstants.swift */; };
 		5E37B9DC2B0D260000851434 /* AEUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9DB2B0D260000851434 /* AEUtils.swift */; };
 		5E37B9E82B2732DD00851434 /* OnboardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9E72B2732DD00851434 /* OnboardingManager.swift */; };
-		5E37B9EA2B27430800851434 /* OnboardingTipProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E37B9E92B27430800851434 /* OnboardingTipProtocol.swift */; };
 		5EAA15CC2B34CD1F00126327 /* ResetAllButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA15CB2B34CD1F00126327 /* ResetAllButtonView.swift */; };
 		5EC40F662AC31BA4000C94E9 /* SCNScene.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */; };
 		5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */; };
@@ -104,7 +103,6 @@
 		5E37B9D92B0AA82300851434 /* AEConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEConstants.swift; sourceTree = "<group>"; };
 		5E37B9DB2B0D260000851434 /* AEUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEUtils.swift; sourceTree = "<group>"; };
 		5E37B9E72B2732DD00851434 /* OnboardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingManager.swift; sourceTree = "<group>"; };
-		5E37B9E92B27430800851434 /* OnboardingTipProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTipProtocol.swift; sourceTree = "<group>"; };
 		5EAA15CB2B34CD1F00126327 /* ResetAllButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetAllButtonView.swift; sourceTree = "<group>"; };
 		5EC40F652AC31BA4000C94E9 /* SCNScene.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNScene.extension.swift; sourceTree = "<group>"; };
 		5EC40F672AC8331C000C94E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -225,7 +223,6 @@
 				5EC40F852ACC4D99000C94E9 /* Usda */,
 				5EC40F6A2AC92A87000C94E9 /* VideoWriter.swift */,
 				5EC40F822ACB7B19000C94E9 /* PlaneAnchorEntity.swift */,
-				5E37B9E92B27430800851434 /* OnboardingTipProtocol.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -463,7 +460,6 @@
 				F3C3AEB62A73CB0300F354F9 /* ARCamRecordApp.swift in Sources */,
 				5EC40F9D2ACC518F000C94E9 /* Int.extension.swift in Sources */,
 				5E2A0F882ACCA867005BA504 /* SettingsView.swift in Sources */,
-				5E37B9EA2B27430800851434 /* OnboardingTipProtocol.swift in Sources */,
 				5EC40F772AC9BBC0000C94E9 /* HorizonControlView.swift in Sources */,
 				5E37B9CC2B0A94C900851434 /* AEConvertable.protocol.swift in Sources */,
 				5EFA6BB72B28674D0000C470 /* AnchorOnboarding.swift in Sources */,
@@ -622,7 +618,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ARCameraRecord/Preview Content\"";
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
@@ -640,7 +636,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -654,7 +650,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -667,7 +663,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ARCameraRecord/Preview Content\"";
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
@@ -685,7 +681,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -699,7 +695,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

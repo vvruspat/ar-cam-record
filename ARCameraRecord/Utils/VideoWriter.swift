@@ -169,8 +169,13 @@ public class VideoWriter: NSObject, ObservableObject {
     }
      
     func startAudioRecording() {
+        var microphone: AVCaptureDevice?
         
-        let microphone = AVCaptureDevice.default(.microphone, for: AVMediaType.audio, position: .unspecified)
+        if #available(iOS 17.0, *) {
+            microphone = AVCaptureDevice.default(.microphone, for: AVMediaType.audio, position: .unspecified)
+        } else {
+            microphone = AVCaptureDevice.default(.builtInMicrophone, for: AVMediaType.audio, position: .unspecified)
+        }
         
         do {
             try self.micInput = AVCaptureDeviceInput(device: microphone!);
