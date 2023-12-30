@@ -18,6 +18,7 @@ struct OnboardingView: View {
                 case .move: MoveOnboarding()
                 case .floor: FloorOnboarding()
                 case .record: RecordOnboarding()
+                case .recording: RecordingOnboarding()
                 case .none: SuccessOnboarding()
                 }
             }

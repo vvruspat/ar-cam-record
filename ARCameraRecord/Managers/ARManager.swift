@@ -46,6 +46,8 @@ class ARManager: NSObject, ObservableObject {
     @Published var isRecording = false
     @Published var isFloorDetected = false
     @Published var distance = 0.0
+    @Published var recordingStartTime = 0.0
+    @Published var recordingTime = 0.0
     
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
@@ -118,6 +120,8 @@ class ARManager: NSObject, ObservableObject {
         cameraTransforms = MDLTransform()
         counter = 0
         timeStart = nil
+        recordingTime = 0.0
+        recordingStartTime = 0.0
 
         startAnimation = 1
 
@@ -169,16 +173,19 @@ class ARManager: NSObject, ObservableObject {
         
         DispatchQueue.main.async {
             self.startAnimation = self.cameraTransforms.keyTimes.count
+            self.recordingTime = 0.0
+            self.recordingStartTime = session.currentFrame?.timestamp ?? 0.0
             self.isRecording = true
-            self.onboardingManager.goToStep(step: nil)
+            self.onboardingManager.goToStep(step: .recording)
         }
     }
     
     func stopRecording() {
         self.isRecording = false
-        videoWriter?.complete();
-        lidarWriter?.complete();
+        videoWriter?.complete()
+        lidarWriter?.complete()
         self.saveSCNFileToDisk()
+        self.onboardingManager.goToStep(step: nil)
     }
     
     func toggleRecord() {
@@ -414,9 +421,9 @@ extension ARManager : ARSessionDelegate {
                     print("Nothing to record from LiDAR")
                 }
             }
+            
+            recordingTime = frame.timestamp;
         }
-        
-//        print(arView.scene.anchors.count)
         
         highlightFloorPlane()
         drawDistanceToCenter()

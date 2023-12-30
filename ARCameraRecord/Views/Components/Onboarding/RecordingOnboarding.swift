@@ -2,17 +2,17 @@
 //  SuccessOnboarding.swift
 //  ARCameraRecord
 //
-//  Created by Aleksandr Kolesov on 30/12/2023.
+//  Created by Aleksandr Kolesov on 12/12/2023.
 //
 
 import SwiftUI
 
-struct SuccessOnboarding: View {
+struct RecordingOnboarding: View {
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
             HStack() {
-                Text("Done!")
+                RecordTimeView()
             }.padding(.bottom, 0.0)
         }
        
@@ -20,5 +20,5 @@ struct SuccessOnboarding: View {
 }
 
 #Preview {
-    SuccessOnboarding()
+    RecordingOnboarding()
 }

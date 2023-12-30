@@ -12,6 +12,7 @@ enum OnboardingSteps {
     case move
     case floor
     case anchor
+    case recording
     case record
 }
 
