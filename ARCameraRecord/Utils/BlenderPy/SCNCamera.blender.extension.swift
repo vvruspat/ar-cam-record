@@ -23,6 +23,8 @@ extension SCNCamera {
         result += "camera.data.clip_end = \(self.zFar)\n"
         result += "camera.rotation_mode = 'ZXY'\n"
         
+        result += "camera.parent = rootAnchor\n"
+        
         result += "bpy.context.scene.camera = camera\n"
         
         result += "camera.animation_data_create()\n"

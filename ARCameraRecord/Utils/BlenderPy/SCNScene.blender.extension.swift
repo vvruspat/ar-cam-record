@@ -10,6 +10,8 @@ import SceneKit
 extension SCNScene {
     func exportToBlenderPy(animation: KeyframeAnimation, fps: Float, videoFileName: String) -> String {
         var blenderPyData = "import bpy\n"
+        
+        blenderPyData += "import math\n"
 
         blenderPyData += "bpy.context.scene.frame_end = \(animation["CameraNode"]?.keyTimes.count ?? 1)\n"
         blenderPyData += "bpy.context.scene.render.fps = \(Int(fps))\n"
@@ -20,8 +22,7 @@ extension SCNScene {
 //        blenderPyData += "else:\n"
 //        blenderPyData += "    background_image = bpy.data.images.load(image_path)\n"
 
-        
-        blenderPyData += self.rootNode.toBlenderPyNode(animation)
+        blenderPyData += self.rootNode.toBlenderPyNode(animation, true)
         
         return blenderPyData
     }
