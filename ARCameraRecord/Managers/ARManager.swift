@@ -367,8 +367,6 @@ class ARManager: NSObject, ObservableObject {
                             // Add the anchor to the ARView's scene
                             arView.scene.addAnchor(anchor)
                             
-//                            arView.scene.anchors.append(anchor)
-                            
                             anchors.append(testResult.first!.worldTransform)
                             
                             if planeDetection == true {
@@ -423,6 +421,8 @@ extension ARManager : ARSessionDelegate {
             }
             
             recordingTime = frame.timestamp;
+        } else {
+            updateCameraTransform(frame)
         }
         
         highlightFloorPlane()

@@ -47,6 +47,11 @@ extension SCNCamera {
             var locations = ""
             var keyframes = ""
             
+            var keyTimes = nodeAnimation.keyTimes;
+            
+            keyTimes.remove(at: 0)
+            keyTimes.remove(at: keyTimes.count - 1)
+            
             nodeAnimation.keyTimes.forEach { time in
                 let transformMatrix = nodeAnimation.localTransform(atTime: TimeInterval.init(truncating: time))
                 
