@@ -421,8 +421,6 @@ extension ARManager : ARSessionDelegate {
             }
             
             recordingTime = frame.timestamp;
-        } else {
-            updateCameraTransform(frame)
         }
         
         highlightFloorPlane()
