@@ -21,10 +21,12 @@ class ARManager: NSObject, ObservableObject {
     
     var arView: ARView
     var cameraTransforms = MDLTransform()
+    var startTransform: matrix_float4x4?
+    var startRotation: simd_float3?
+    var startTime: TimeInterval?
     var anchors: [simd_float4x4] = []
     var timer: Timer?
     var counter = 0
-    var timeStart: TimeInterval?
 
     var fps: Float = 30.0
     var startAnimation = 1
@@ -119,7 +121,9 @@ class ARManager: NSObject, ObservableObject {
         anchors.removeAll()
         cameraTransforms = MDLTransform()
         counter = 0
-        timeStart = nil
+        startTime = nil
+        startTransform = nil
+        startRotation = nil
         recordingTime = 0.0
         recordingStartTime = 0.0
 
@@ -172,6 +176,7 @@ class ARManager: NSObject, ObservableObject {
         }
         
         DispatchQueue.main.async {
+            self.addStartFrameToCameraTransform()
             self.startAnimation = self.cameraTransforms.keyTimes.count
             self.recordingTime = 0.0
             self.recordingStartTime = session.currentFrame?.timestamp ?? 0.0
@@ -381,14 +386,33 @@ class ARManager: NSObject, ObservableObject {
         }
     }
     
-    func updateCameraTransform(_ frame: ARFrame) {
+    func updateCameraTransform(_ frame: ARFrame, _ updateStart: Bool = false) {
         let transform = frame.camera.transform
         let rotation = frame.camera.eulerAngles
         let position = transform.columns.3
         let elapsedTime = frame.timestamp
         
-        cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
-        cameraTransforms.setRotation(rotation, forTime: elapsedTime)
+        if (updateStart) {
+            startTime = elapsedTime
+            startTransform = transform
+            startRotation = rotation
+        } else {
+            cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
+            cameraTransforms.setRotation(rotation, forTime: elapsedTime)
+        }
+    }
+    
+    func addStartFrameToCameraTransform() {
+        if (startTransform != nil && startTime != nil && startRotation != nil) {
+            let transform = startTransform
+            let rotation = startRotation!
+            let position = transform!.columns.3
+            let elapsedTime = startTime!
+            
+            cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
+            cameraTransforms.setRotation(rotation, forTime: elapsedTime)
+        }
+
     }
 }
 
@@ -421,6 +445,8 @@ extension ARManager : ARSessionDelegate {
             }
             
             recordingTime = frame.timestamp;
+        } else {
+            updateCameraTransform(frame, true)
         }
         
         highlightFloorPlane()
