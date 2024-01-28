@@ -13,9 +13,7 @@ struct RecordButtonView: View {
     var body: some View {
         Button() {
             if (!manager.isRecording) {
-                Task {
-                    await manager.record()
-                }
+                manager.startRecording()
             } else {
                 manager.stopRecording()
             }

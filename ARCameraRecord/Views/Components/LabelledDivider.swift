@@ -31,14 +31,22 @@ struct LabelledDivider: View {
 
     var body: some View {
         ZStack {
-            Text(String(format: "%.2f˚", angle))
-                .padding(.bottom, 80)
-                .foregroundColor(color)
-                .animation(Animation.easeInOut(duration: animationSpeed), value: color)
-                .fontWeight(.bold)
-                .shadow(color: .black.opacity(0.2), radius: 1, x: 1, y: 1)
-            
-            HStack {
+            if #available(iOS 16.0, *) {
+                Text(String(format: "%.2f˚", angle))
+                    .padding(.bottom, 80)
+                    .foregroundColor(color)
+                    .animation(Animation.easeInOut(duration: animationSpeed), value: color)
+                    .fontWeight(.bold)
+                    .shadow(color: .black.opacity(0.2), radius: 1, x: 1, y: 1)
+            } else {
+                Text(String(format: "%.2f˚", angle))
+                    .padding(.bottom, 80)
+                    .foregroundColor(color)
+                    .animation(Animation.easeInOut(duration: animationSpeed), value: color)
+                    .font(Font.title.weight(.bold))
+                    .shadow(color: .black.opacity(0.2), radius: 1, x: 1, y: 1)
+            }
+                HStack {
                 Spacer().frame(width: 100)
                 line
                 Spacer().frame(width: 100)
