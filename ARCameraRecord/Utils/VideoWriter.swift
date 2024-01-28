@@ -190,7 +190,9 @@ public class VideoWriter: NSObject, ObservableObject {
                     self.captureSession!.addOutput(self.audioOutput!)
                     self.audioOutput?.setSampleBufferDelegate(self, queue: DispatchQueue.global());
                     
-                    self.captureSession?.startRunning();
+                    DispatchQueue.global(qos: .background).async {
+                        self.captureSession?.startRunning()
+                    }
                 }
                 
             }
