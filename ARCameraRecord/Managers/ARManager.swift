@@ -29,6 +29,8 @@ class ARManager: NSObject, ObservableObject {
     var counter = 0
 
     var fps: Float = 30.0
+    var imageWidth: Int = 3840
+    var imageHeight: Int = 2160
     var startAnimation = 1
     var videoWriter: VideoWriter?
     var lidarWriter: VideoWriter?
@@ -106,6 +108,11 @@ class ARManager: NSObject, ObservableObject {
             arView.debugOptions.insert(.showSceneUnderstanding)
         }
 
+        imageWidth = Int(arView.session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
+        imageHeight = Int(arView.session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
+        
+        setupVideoWriter()
+        
         arView.session.delegate = self
         
         arView.session.run(config, options: [.resetTracking, .resetSceneReconstruction, .removeExistingAnchors])
@@ -113,6 +120,32 @@ class ARManager: NSObject, ObservableObject {
         fps = Float(config.videoFormat.framesPerSecond)
         
         onboardingManager.goToStep(step: .move)
+    }
+    
+    func setupVideoWriter() {
+        
+        self.filename = "ar-captured-\(Int(Date.now.timeIntervalSince1970))"
+        
+        videoWriter = VideoWriter()
+        videoWriter?.frameTime = Double(1.0 / self.fps)
+        videoWriter?.width = imageWidth
+        videoWriter?.height = imageHeight
+        videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
+        
+        lidarWriter = VideoWriter()
+        lidarWriter?.queueLabel = "lidar.recording"
+        lidarWriter?.frameTime = Double(1.0 / self.fps)
+        lidarWriter?.width = imageWidth
+        lidarWriter?.height = imageHeight
+        lidarWriter?.url = self.getTmpPathToSave("\(self.filename)-lidar.mov")
+        
+        DispatchQueue.global(qos: .background).async {
+            self.videoWriter?.start()
+            
+            if self.recordLidar {
+                self.lidarWriter?.start()
+            }
+        }
     }
     
     func reset() {
@@ -136,6 +169,9 @@ class ARManager: NSObject, ObservableObject {
         highlightedPlane = nil
         selectedFloorPlane = nil
         
+        videoWriter = nil
+        lidarWriter = nil
+        
         isFloorDetected = false
         distance = 0.0
         
@@ -150,56 +186,35 @@ class ARManager: NSObject, ObservableObject {
         }
     }
     
-    func record () async {
-        
-        let session = await self.arView.session
-        
-        self.filename = "ar-captured-\(Int(Date.now.timeIntervalSince1970))"
-        
-        videoWriter = VideoWriter()
-        videoWriter?.frameTime = Double(1.0 / self.fps)
-        videoWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
-        videoWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
-        videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
-        videoWriter?.start()
-        
-        if recordLidar {
-            lidarWriter = VideoWriter()
-            lidarWriter?.queueLabel = "lidar.recording"
-            lidarWriter?.frameTime = Double(1.0 / self.fps)
-            lidarWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
-            lidarWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
-            lidarWriter?.url = self.getTmpPathToSave("\(self.filename)-lidar.mov")
-            lidarWriter?.start()
-        } else {
-            lidarWriter = nil
-        }
-        
-        DispatchQueue.main.async {
-            self.addStartFrameToCameraTransform()
-            self.startAnimation = self.cameraTransforms.keyTimes.count
-            self.recordingTime = 0.0
-            self.recordingStartTime = session.currentFrame?.timestamp ?? 0.0
-            self.isRecording = true
-            self.onboardingManager.goToStep(step: .recording)
-        }
+    func startRecording () {
+//        addStartFrameToCameraTransform()
+        startAnimation = self.cameraTransforms.keyTimes.count
+        recordingTime = 0.0
+        recordingStartTime = arView.session.currentFrame?.timestamp ?? 0.0
+
+        isRecording = true
+
+        onboardingManager.goToStep(step: .recording)
     }
     
     func stopRecording() {
-        self.isRecording = false
+        isRecording = false
+        
         videoWriter?.complete()
-        lidarWriter?.complete()
-        self.saveSCNFileToDisk()
-        self.onboardingManager.goToStep(step: nil)
+        
+        if recordLidar {
+            lidarWriter?.complete()
+        }
+        
+        saveSCNFileToDisk()
+        onboardingManager.goToStep(step: nil)
     }
     
     func toggleRecord() {
-        Task {
-            if (isRecording) {
-                self.stopRecording()
-            } else {
-                await self.record()
-            }
+        if (isRecording) {
+            stopRecording()
+        } else {
+            startRecording()
         }
     }
     
