@@ -165,7 +165,6 @@ public class VideoWriter: NSObject, ObservableObject {
             }
         })
         
-        startAudioRecording()
     }
      
     func startAudioRecording() {

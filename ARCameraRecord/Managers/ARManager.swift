@@ -193,6 +193,8 @@ class ARManager: NSObject, ObservableObject {
         recordingStartTime = arView.session.currentFrame?.timestamp ?? 0.0
 
         isRecording = true
+        
+        videoWriter?.startAudioRecording()
 
         onboardingManager.goToStep(step: .recording)
     }
