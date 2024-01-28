@@ -187,7 +187,7 @@ class ARManager: NSObject, ObservableObject {
     }
     
     func startRecording () {
-//        addStartFrameToCameraTransform()
+        addStartFrameToCameraTransform()
         startAnimation = self.cameraTransforms.keyTimes.count
         recordingTime = 0.0
         recordingStartTime = arView.session.currentFrame?.timestamp ?? 0.0
