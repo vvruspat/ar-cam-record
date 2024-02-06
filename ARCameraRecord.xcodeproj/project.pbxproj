@@ -68,6 +68,7 @@
 		F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C3AEB72A73CB0300F354F9 /* ContentView.swift */; };
 		F3C3AEBA2A73CB0400F354F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEB92A73CB0400F354F9 /* Assets.xcassets */; };
 		F3C3AEBD2A73CB0400F354F9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C3AEBC2A73CB0400F354F9 /* Preview Assets.xcassets */; };
+		18607A52995342A6B950A687 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 5C7C53E16A894A41A6D42175 /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -155,6 +156,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18607A52995342A6B950A687 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +372,7 @@
 				F3C3AEAF2A73CB0300F354F9 /* Frameworks */,
 				F3C3AEB02A73CB0300F354F9 /* Resources */,
 				5E37B9AA2AF700C500851434 /* Embed Foundation Extensions */,
+				06A5A13EEE2640838095DABF /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -377,6 +380,7 @@
 			);
 			name = ARCameraRecord;
 			packageProductDependencies = (
+				5C7C53E16A894A41A6D42175 /* Sentry */,
 			);
 			productName = ARCamRecord;
 			productReference = F3C3AEB22A73CB0300F354F9 /* ARCameraRecord.app */;
@@ -407,6 +411,7 @@
 			);
 			mainGroup = F3C3AEA92A73CB0300F354F9;
 			packageReferences = (
+				564C99E5D88E498B8215E00F /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = F3C3AEB32A73CB0300F354F9 /* Products */;
 			projectDirPath = "";
@@ -664,6 +669,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 			};
 			name = Debug;
 		};
@@ -710,6 +716,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 			};
 			name = Release;
 		};
@@ -735,6 +742,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		06A5A13EEE2640838095DABF /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Upload Debug Symbols to Sentry";
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "# This script is responsable to upload debug symbols and source context for Sentry.\nif which sentry-cli >/dev/null; then\nexport SENTRY_ORG=alexander-cd\nexport SENTRY_PROJECT=apple-ios\nERROR=$(sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		564C99E5D88E498B8215E00F /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5C7C53E16A894A41A6D42175 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 564C99E5D88E498B8215E00F /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F3C3AEAA2A73CB0300F354F9 /* Project object */;
 }
