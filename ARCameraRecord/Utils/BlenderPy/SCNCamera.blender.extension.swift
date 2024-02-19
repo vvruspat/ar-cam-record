@@ -62,7 +62,6 @@ extension SCNCamera {
                 index += 1
             }
             
-            
             result += "movement_keyframes = [\(keyframes)]\n"
             result += "locations = [\(locations)]\n"
             result += "rotations = [\(rotations)]\n"

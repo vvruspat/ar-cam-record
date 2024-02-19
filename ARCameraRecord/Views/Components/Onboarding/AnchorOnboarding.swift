@@ -20,7 +20,7 @@ struct AnchorOnboarding: View {
                 Spacer()
                 Text("Tap highlighted button to add anchor to scene")
                 Spacer()
-            }.padding(.bottom, 0.0)
+            }.padding(.bottom, 0.0).foregroundStyle(Color("OnboardingTextColor"))
             
             if (orientation != .landscapeRight) {
                 Spacer()
