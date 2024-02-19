@@ -20,7 +20,7 @@ struct RecordOnboarding: View {
                 Spacer()
                 Text("Now you can start recording video and camera movements")
                 Spacer()
-            }.padding(.bottom, 0.0)
+            }.padding(.bottom, 0.0).foregroundStyle(Color("OnboardingTextColor"))
             
             if (orientation != .landscapeRight) {
                 Spacer()

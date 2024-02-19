@@ -20,7 +20,7 @@ struct FloorOnboarding: View {
                 Spacer()
                 Text("Press button to select highlighted plane as a floor")
                 Spacer()
-            }.padding(.bottom, 0.0)
+            }.padding(.bottom, 0.0).foregroundStyle(Color("OnboardingTextColor"))
             
             if (orientation != .landscapeRight) {
                 Spacer()

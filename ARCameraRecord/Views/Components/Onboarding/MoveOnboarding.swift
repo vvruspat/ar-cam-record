@@ -21,7 +21,7 @@ struct MoveOnboarding: View {
                 Image(systemName: "arrow.left.arrow.right.square")
                 Text("Move camera to detect planes")
                 Spacer()
-            }.padding(.bottom, 0.0)
+            }.padding(.bottom, 0.0).foregroundStyle(Color("OnboardingTextColor"))
             
             if (orientation != .landscapeRight) {
                 Spacer()
