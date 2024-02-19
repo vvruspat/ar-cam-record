@@ -8,18 +8,27 @@
 import SwiftUI
 
 struct AnchorOnboarding: View {
+    var orientation: InterfaceOrientation
+
     var body: some View {
-        VStack(alignment: .trailing) {
-            HStack() {
+        VStack(alignment: .center) {
+            if (orientation == .landscapeRight) {
                 Spacer()
-                Text("Tap this button to add anchor to scene")
-                Image(systemName: "arrow.right")
-            }.foregroundStyle(Color("OnboardingTextColor"))
-            Spacer()
+            }
+            
+            HStack(alignment: .center) {
+                Spacer()
+                Text("Tap highlighted button to add anchor to scene")
+                Spacer()
+            }.padding(.bottom, 0.0)
+            
+            if (orientation != .landscapeRight) {
+                Spacer()
+            }
         }
     }
 }
 
 #Preview {
-    AnchorOnboarding()
+    AnchorOnboarding(orientation: .landscapeRight)
 }

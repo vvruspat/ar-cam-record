@@ -8,7 +8,7 @@
 import SceneKit
 
 extension SCNScene {
-    func exportToBlenderPy(animation: KeyframeAnimation, fps: Float, videoFileName: String) -> String {
+    func exportToBlenderPy(animation: KeyframeAnimation, fps: Float, isVertical: Bool, videoFileName: String) -> String {
         var blenderPyData = "import bpy\n"
         
         blenderPyData += "import math\n"
@@ -16,19 +16,21 @@ extension SCNScene {
         blenderPyData += "bpy.context.scene.frame_end = \(animation["CameraNode"]?.keyTimes.count ?? 1)\n"
         blenderPyData += "bpy.context.scene.render.fps = \(Int(fps))\n"
 
-//        blenderPyData += "image_path = \"\(videoFileName)\"\n"
-//        blenderPyData += "if image_path in bpy.data.images:\n"
-//        blenderPyData += "    background_image = bpy.data.images[image_path]\n"
-//        blenderPyData += "else:\n"
-//        blenderPyData += "    background_image = bpy.data.images.load(image_path)\n"
+        if (isVertical) {
+            blenderPyData += "bpy.context.scene.render.resolution_y = 3840\n"
+            blenderPyData += "bpy.context.scene.render.resolution_x = 2160\n"
+        } else {
+            blenderPyData += "bpy.context.scene.render.resolution_y = 2160\n"
+            blenderPyData += "bpy.context.scene.render.resolution_x = 3840\n"
+        }
 
-        blenderPyData += self.rootNode.toBlenderPyNode(animation, true)
+        blenderPyData += self.rootNode.toBlenderPyNode(animation, true, isVertical: isVertical)
         
         return blenderPyData
     }
     
-    func writeToBlenderPy(url: URL, animation: KeyframeAnimation, fps: Float, videoFileName: String) {
-        let data = self.exportToBlenderPy(animation: animation, fps: fps, videoFileName: videoFileName)
+    func writeToBlenderPy(url: URL, animation: KeyframeAnimation, fps: Float, isVertical: Bool, videoFileName: String) {
+        let data = self.exportToBlenderPy(animation: animation, fps: fps, isVertical: isVertical, videoFileName: videoFileName)
         
         do {
             try data.write(to: url, atomically: false, encoding: String.Encoding.utf8)

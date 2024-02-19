@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct RecordingOnboarding: View {
+    var orientation: InterfaceOrientation
+    
     var body: some View {
         VStack(alignment: .center) {
-            Spacer()
-            HStack() {
+            if (orientation == .landscapeRight) {
+                Spacer()
+            }
+            
+            HStack(alignment: .center) {
+                Spacer()
                 RecordTimeView()
-            }.padding(.bottom, 0.0)
+                Spacer()
+            }
+            
+            if (orientation == .portrait) {
+                Spacer()
+            }
         }
-       
     }
 }
 
 #Preview {
-    RecordingOnboarding()
+    RecordingOnboarding(orientation: .landscapeRight)
 }

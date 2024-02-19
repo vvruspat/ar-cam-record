@@ -12,11 +12,18 @@ import MetalKit
 import ModelIO
 
 struct ContentView: View {
+    
+    @EnvironmentObject var manager: ARManager
+    
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
                 ARViewContainer().ignoresSafeArea(.all)
-                ControlsView().padding(.top, 10.0)
+                if manager.orientation == InterfaceOrientation.landscapeRight {
+                    ControlsView().padding(.all, 10.0)
+                } else {
+                    VerticalControlsView().padding(.all, 10.0)
+                }
                 OnboardingView()
             }
         }

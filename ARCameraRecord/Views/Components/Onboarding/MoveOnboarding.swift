@@ -8,21 +8,28 @@
 import SwiftUI
 
 struct MoveOnboarding: View {
+    var orientation: InterfaceOrientation
+    
     var body: some View {
         VStack(alignment: .center) {
-            Spacer()
+            if (orientation == .landscapeRight) {
+                Spacer()
+            }
+            
             HStack(alignment: .center) {
-                VStack {
-                    Spacer()
-                    Image(systemName: "arrow.left.arrow.right.square")
-                    Text("Move camera to detect planes")
-                }.foregroundStyle(Color("OnboardingTextColor"))
-            }.padding(.top, 40.0)
-            Spacer()
+                Spacer()
+                Image(systemName: "arrow.left.arrow.right.square")
+                Text("Move camera to detect planes")
+                Spacer()
+            }.padding(.bottom, 0.0)
+            
+            if (orientation != .landscapeRight) {
+                Spacer()
+            }
         }
     }
 }
 
 #Preview {
-    MoveOnboarding()
+    MoveOnboarding(orientation: .landscapeRight)
 }
