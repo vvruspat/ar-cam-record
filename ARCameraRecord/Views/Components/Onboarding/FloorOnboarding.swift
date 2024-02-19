@@ -8,18 +8,27 @@
 import SwiftUI
 
 struct FloorOnboarding: View {
+    var orientation: InterfaceOrientation
+
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack() {
-                Image(systemName: "arrow.left")
+        VStack(alignment: .center) {
+            if (orientation == .landscapeRight) {
+                Spacer()
+            }
+            
+            HStack(alignment: .center) {
+                Spacer()
                 Text("Press button to select highlighted plane as a floor")
                 Spacer()
-            }.foregroundStyle(Color("OnboardingTextColor"))
-            Spacer()
+            }.padding(.bottom, 0.0)
+            
+            if (orientation != .landscapeRight) {
+                Spacer()
+            }
         }
     }
 }
 
 #Preview {
-    FloorOnboarding()
+    FloorOnboarding(orientation: .landscapeRight)
 }

@@ -1,5 +1,5 @@
 //
-//  ControlsView.swift
+//  VerticalControlsView.swift
 //  ARCamRecord
 //
 //  Created by Aleksandr Kolesov on 01/10/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ControlsView: View {
+struct VerticalControlsView: View {
     @AppStorage(SettingsKeys.showHorizon) var showHorizon = true
     @AppStorage(SettingsKeys.showCrosshair) var showCrosshair = true
     @EnvironmentObject var manager: ARManager
@@ -16,9 +16,6 @@ struct ControlsView: View {
         ZStack {
             if showCrosshair {
                 CrosshairButtonView()
-            }
-            if showHorizon {
-                HorizonControlView()
             }
             HStack(alignment: .center) {
                 ZStack(alignment: .center) {
@@ -38,21 +35,22 @@ struct ControlsView: View {
                 }
                 Spacer()
                 
+                VStack(alignment: .center) {
+                    Spacer()
+                    RecordButtonView()
+                }
+                Spacer()
+                
                 ZStack(alignment: .center) {
                     VStack(alignment: .trailing) {
-                        AddAnchorButtonView()
-                        Spacer()
-                    }
-                    
-                    VStack(alignment: .trailing) {
-                        Spacer()
-                        RecordButtonView()
-                        Spacer()
-                    }
-                    
-                    VStack(alignment: .trailing) {
-                        Spacer()
                         RotateButtonView()
+                        Spacer()
+                    }
+                    
+                    VStack(alignment: .trailing) {
+                        Spacer()
+                        
+                        AddAnchorButtonView()
                     }
                 }
             }
@@ -61,5 +59,5 @@ struct ControlsView: View {
 }
 
 #Preview {
-    ControlsView()
+    VerticalControlsView()
 }
