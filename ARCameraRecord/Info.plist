@@ -45,13 +45,13 @@
 			</array>
 		</dict>
 	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UIFileSharingEnabled</key>
-	<true/>
-	<key>arkit</key>
 	<true/>
 	<key>UILaunchScreen</key>
 	<false/>
-    <key>ITSAppUsesNonExemptEncryption</key>
-    <false/>
+	<key>arkit</key>
+	<true/>
 </dict>
 </plist>
