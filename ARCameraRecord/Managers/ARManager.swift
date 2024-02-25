@@ -132,12 +132,6 @@ class ARManager: NSObject, ObservableObject {
             let position: SIMD3<Float> = SIMD3(x: 0.0, y: 0.0, z: 0.0)
             
             anchorEntity.setPosition(position, relativeTo: nil)
-            
-            let anchor = AnchorEntity(world: anchorEntity.position)
-            anchor.addChild(anchorEntity)
-            
-            // Add the anchor to the ARView's scene
-            arView.scene.addAnchor(anchor)
         }
         
         fps = Float(config.videoFormat.framesPerSecond)
