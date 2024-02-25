@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct SuccessOnboarding: View {
+    var orientation: InterfaceOrientation
+    
     var body: some View {
         VStack(alignment: .center) {
-            Spacer()
-            HStack() {
+            if (orientation == .landscapeRight) {
+                Spacer()
+            }
+            
+            HStack(alignment: .center) {
+                Spacer()
                 Text("Done!")
-            }.padding(.bottom, 0.0)
+                Spacer()
+            }.padding(.bottom, 0.0).foregroundStyle(Color("OnboardingTextColor"))
+            
+            if (orientation != .landscapeRight) {
+                Spacer()
+            }
         }
-       
     }
 }
 
 #Preview {
-    SuccessOnboarding()
+    SuccessOnboarding(orientation: .landscapeRight)
 }

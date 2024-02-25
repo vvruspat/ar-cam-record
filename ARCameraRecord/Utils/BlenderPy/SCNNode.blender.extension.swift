@@ -8,12 +8,12 @@
 import SceneKit
 
 extension SCNNode {
-    func toBlenderPyNode(_ animation: KeyframeAnimation, _ isRoot: Bool = false) -> String {
+    func toBlenderPyNode(_ animation: KeyframeAnimation, _ isRoot: Bool = false, isVertical: Bool) -> String {
         var blenderPyNode = ""
         let varName = isRoot ? "rootAnchor" : "anchor"
 
         if (self.camera != nil) {
-            blenderPyNode += self.camera!.toBlenderPyCamera(animation, self.name?.replacingOccurrences(of: " ", with: "") ?? "Camera\(Int.random(in: 0...100))") + "\n"
+            blenderPyNode += self.camera!.toBlenderPyCamera(animation, self.name?.replacingOccurrences(of: " ", with: "") ?? "Camera\(Int.random(in: 0...100))", isVertical: isVertical) + "\n"
         } else {
             
             if (isRoot) {
@@ -30,12 +30,11 @@ extension SCNNode {
             
             if (!isRoot) {
                 blenderPyNode += "\(varName).parent = rootAnchor"
-//                blenderPyNode += "\(varName).matrix_parent_inverse = rootAnchor.matrix_world.inverted()"
             }
         }
         
         self.childNodes.forEach { node in
-            blenderPyNode += node.toBlenderPyNode(animation) + "\n"
+            blenderPyNode += node.toBlenderPyNode(animation, false, isVertical: isVertical) + "\n"
         }
         
         return blenderPyNode

@@ -53,6 +53,8 @@ class ARManager: NSObject, ObservableObject {
     @Published var recordingStartTime = 0.0
     @Published var recordingTime = 0.0
     
+    @Published var orientation = InterfaceOrientation.landscapeRight
+    
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     
@@ -62,7 +64,7 @@ class ARManager: NSObject, ObservableObject {
         super.init()
         
         UserDefaults.standard.addObserver(self, forKeyPath: SettingsKeys.showLidar, options: .new, context: nil)
-        
+        setOrientation(InterfaceOrientation.landscapeRight)
         setup()
     }
     
@@ -70,9 +72,17 @@ class ARManager: NSObject, ObservableObject {
         UserDefaults.standard.removeObserver(self, forKeyPath: SettingsKeys.showLidar)
     }
     
+    func setOrientation(_ orient: InterfaceOrientation) {
+        orientation = orient
+        AppDelegate.orientationLock = orient == InterfaceOrientation.portrait ? UIInterfaceOrientationMask.portrait : UIInterfaceOrientationMask.landscapeRight
+        
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+                windowScene.keyWindow?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
+    }
+    
     func setup() {
         arView.session.pause()
-        
+                        
         arView.automaticallyConfigureSession = false
         
         sceneToSave.rootNode.position = SCNVector3(0, 0, 0)
@@ -128,6 +138,7 @@ class ARManager: NSObject, ObservableObject {
         
         videoWriter = VideoWriter()
         videoWriter?.frameTime = Double(1.0 / self.fps)
+        
         videoWriter?.width = imageWidth
         videoWriter?.height = imageHeight
         videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
@@ -140,7 +151,7 @@ class ARManager: NSObject, ObservableObject {
         lidarWriter?.url = self.getTmpPathToSave("\(self.filename)-lidar.mov")
         
         DispatchQueue.global(qos: .background).async {
-            self.videoWriter?.start()
+            self.videoWriter?.start(self.orientation == InterfaceOrientation.landscapeRight ? false : true)
             
             if self.recordLidar {
                 self.lidarWriter?.start()
@@ -282,17 +293,9 @@ class ARManager: NSObject, ObservableObject {
         ]
         
         if let path = getTmpPathToSave("\(self.filename).blender.py") {
-            sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps, videoFileName: "\(self.filename).mov")
+            sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps, isVertical: orientation != InterfaceOrientation.landscapeRight, videoFileName: "\(self.filename).mov")
         }
-        
-//        if let path = getTmpPathToSave("\(self.filename).usda") {
-//            sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
-//        }
-        
-//        if let path = getTmpPathToSave("\(self.filename).ae.js") {
-//            sceneToSave.writeToAE(url: path, animation: animation, fps: self.fps)
-//        }
-        
+
         finalizeSave()
     }
     

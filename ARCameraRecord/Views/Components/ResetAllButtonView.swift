@@ -15,7 +15,7 @@ struct ResetAllButtonView: View {
             manager.reset()
         } label: {
             Image(systemName: "arrow.clockwise.circle").font(.system(size: 32)).tint(.white)
-        }.padding(16).frame( width: 48, height: 48)
+        }.padding(16).frame( width: 48, height: 48).background(Color("ToolBoxBackground")).clipShape(RoundedRectangle(cornerRadius: 4))
     }
 }
 

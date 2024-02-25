@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_12" orientation="landscape" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,35 +14,35 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="852" height="393"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="LaunchScreenBackground" translatesAutoresizingMaskIntoConstraints="NO" id="S0n-An-8ZG">
-                                <rect key="frame" x="0.0" y="0.0" width="852" height="393"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="LaunchScreenBackground" translatesAutoresizingMaskIntoConstraints="NO" id="S0n-An-8ZG">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ARCamera" translatesAutoresizingMaskIntoConstraints="NO" id="aaV-Oh-5qj">
-                                <rect key="frame" x="327.66666666666669" y="60" width="196.66666666666669" height="273"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="aaV-Oh-5qj" secondAttribute="height" multiplier="80:111" id="LKD-Na-AUX"/>
-                                </constraints>
+                                <rect key="frame" x="36" y="95" width="321" height="687"/>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="81s-6B-gx2"/>
                         <color key="backgroundColor" name="LaunchBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="S0n-An-8ZG" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="23u-4R-9hb"/>
-                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="60" id="2gO-Jm-6Xu"/>
-                            <constraint firstAttribute="bottom" secondItem="S0n-An-8ZG" secondAttribute="bottom" id="B2n-nk-ewD"/>
-                            <constraint firstItem="S0n-An-8ZG" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Fdg-ZI-q2X"/>
-                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="jAB-Ve-gsU"/>
-                            <constraint firstAttribute="bottom" secondItem="aaV-Oh-5qj" secondAttribute="bottom" constant="60" id="xKd-4m-vFl"/>
-                            <constraint firstAttribute="trailing" secondItem="S0n-An-8ZG" secondAttribute="trailing" id="yF9-aW-iaA"/>
-                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="yfb-EB-b3s"/>
+                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="top" secondItem="81s-6B-gx2" secondAttribute="top" constant="36" id="Ghw-9p-tPa"/>
+                            <constraint firstItem="81s-6B-gx2" firstAttribute="bottom" secondItem="aaV-Oh-5qj" secondAttribute="bottom" constant="36" id="Jxq-yz-h4T"/>
+                            <constraint firstItem="S0n-An-8ZG" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="KbY-9Z-S1i"/>
+                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="OZm-ds-a1a"/>
+                            <constraint firstItem="aaV-Oh-5qj" firstAttribute="leading" secondItem="81s-6B-gx2" secondAttribute="leading" constant="36" id="RVv-Zy-wFi"/>
+                            <constraint firstItem="S0n-An-8ZG" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="UWr-Iz-owA"/>
+                            <constraint firstItem="S0n-An-8ZG" firstAttribute="top" secondItem="81s-6B-gx2" secondAttribute="top" id="Y1Y-wt-JHm"/>
+                            <constraint firstAttribute="trailing" secondItem="S0n-An-8ZG" secondAttribute="trailing" id="Zqp-I5-vWF"/>
+                            <constraint firstItem="81s-6B-gx2" firstAttribute="bottom" secondItem="S0n-An-8ZG" secondAttribute="bottom" id="k5M-HT-Ypd"/>
+                            <constraint firstItem="81s-6B-gx2" firstAttribute="trailing" secondItem="aaV-Oh-5qj" secondAttribute="trailing" constant="36" id="vxl-Sm-qaN"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.112676056338032" y="373.28244274809157"/>
         </scene>
     </scenes>
     <resources>

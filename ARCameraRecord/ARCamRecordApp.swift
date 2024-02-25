@@ -11,6 +11,8 @@ import Sentry
 
 @main
 struct ARCamRecordApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     init() {
         SentrySDK.start { options in
             options.dsn = "https://e47b28d018525860829ab1106912b5c2@o1062861.ingest.sentry.io/4506699636670464"
@@ -31,5 +33,13 @@ struct ARCamRecordApp: App {
             ContentView()
                 .environmentObject(ARManager.shared)
         }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    static var orientationLock = UIInterfaceOrientationMask.portrait
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask(rawValue: AppDelegate.orientationLock.rawValue)
     }
 }
