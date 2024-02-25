@@ -127,6 +127,13 @@ class ARManager: NSObject, ObservableObject {
         
         arView.session.run(config, options: [.resetTracking, .resetSceneReconstruction, .removeExistingAnchors])
         
+        if let anchorEntity = try? Entity.loadAnchor(named: "axis") {
+
+            let position: SIMD3<Float> = SIMD3(x: 0.0, y: 0.0, z: 0.0)
+            
+            anchorEntity.setPosition(position, relativeTo: nil)
+        }
+        
         fps = Float(config.videoFormat.framesPerSecond)
         
         onboardingManager.goToStep(step: .move)
