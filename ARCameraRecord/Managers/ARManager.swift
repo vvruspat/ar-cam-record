@@ -29,7 +29,6 @@ class ARManager: NSObject, ObservableObject {
     var fps: Float = 30.0
     var startAnimation = 1
     var videoWriter: VideoWriter?
-    var lidarWriter: VideoWriter?
 
     var filename = "ar-captured"
 
@@ -50,7 +49,6 @@ class ARManager: NSObject, ObservableObject {
     @Published var recordingTime = 0.0
     
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
-    @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     
     override init() {
         arView = ARView(frame: .zero)
@@ -159,18 +157,6 @@ class ARManager: NSObject, ObservableObject {
         videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
         videoWriter?.start()
         
-        if recordLidar {
-            lidarWriter = VideoWriter()
-            lidarWriter?.queueLabel = "lidar.recording"
-            lidarWriter?.frameTime = Double(1.0 / self.fps)
-            lidarWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
-            lidarWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
-            lidarWriter?.url = self.getTmpPathToSave("\(self.filename)-lidar.mov")
-            lidarWriter?.start()
-        } else {
-            lidarWriter = nil
-        }
-        
         DispatchQueue.main.async {
             self.startAnimation = self.cameraTransforms.keyTimes.count
             self.recordingTime = 0.0
@@ -183,7 +169,6 @@ class ARManager: NSObject, ObservableObject {
     func stopRecording() {
         self.isRecording = false
         videoWriter?.complete()
-        lidarWriter?.complete()
         self.saveSCNFileToDisk()
         self.onboardingManager.goToStep(step: nil)
     }
@@ -262,15 +247,7 @@ class ARManager: NSObject, ObservableObject {
         if let path = getTmpPathToSave("\(self.filename).blender.py") {
             sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps, videoFileName: "\(self.filename).mov")
         }
-        
-//        if let path = getTmpPathToSave("\(self.filename).usda") {
-//            sceneToSave.writeToUsda(url: path, animation: animation, fps: self.fps)
-//        }
-        
-//        if let path = getTmpPathToSave("\(self.filename).ae.js") {
-//            sceneToSave.writeToAE(url: path, animation: animation, fps: self.fps)
-//        }
-        
+
         finalizeSave()
     }
     
@@ -312,18 +289,6 @@ class ARManager: NSObject, ObservableObject {
     func finalizeSave() {
         let folderToMove = createAppFolder()
         
-        // Move usda
-//        if let tmpPath = getTmpPathToSave("\(self.filename).usda"),
-//           let path = getPathToSave("\(self.filename).usda", folder: folderToMove) {
-//            moveFile(from: tmpPath, to: path)
-//        }
-        
-//        // Move ae script
-//        if let tmpPath = getTmpPathToSave("\(self.filename).ae.js"),
-//           let path = getPathToSave("\(self.filename).ae.js", folder: folderToMove) {
-//            moveFile(from: tmpPath, to: path)
-//        }
-
         // Move python script
         if let tmpPath = getTmpPathToSave("\(self.filename).blender.py"),
            let path = getPathToSave("\(self.filename).blender.py", folder: folderToMove) {
@@ -333,12 +298,6 @@ class ARManager: NSObject, ObservableObject {
         // Move Video
         if let path = getPathToSave("\(self.filename).mov", folder: folderToMove),
            let tmpPath = videoWriter?.url {
-            moveFile(from: tmpPath, to: path)
-        }
-        
-        // Move LiDAR
-        if let path = getPathToSave("\(self.filename)-lidar.mov", folder: folderToMove),
-           let tmpPath = lidarWriter?.url {
             moveFile(from: tmpPath, to: path)
         }
 
@@ -398,27 +357,6 @@ extension ARManager : ARSessionDelegate {
             updateCameraTransform(frame)
             // recording video
             videoWriter?.submit(pixelBuffer: frame.capturedImage)
-            
-            if recordLidar {
-                // recording LiDAR video
-                if let depthMap = frame.sceneDepth?.depthMap {
-                    let dataImage = CIImage(cvPixelBuffer: depthMap)
-                    var pixelBuffer: CVPixelBuffer?
-                    
-                    if self.pixelBufferCreateFromImage(ciImage: dataImage, outBuffer: &pixelBuffer) == kCVReturnSuccess {
-                        
-                        if pixelBuffer != nil {
-                            lidarWriter?.submit(pixelBuffer: pixelBuffer!)
-                        } else {
-                            print("Empty pixel buffer")
-                        }
-                    } else {
-                        print("Failed to convert depth data")
-                    }
-                } else {
-                    print("Nothing to record from LiDAR")
-                }
-            }
             
             recordingTime = frame.timestamp;
         } else {
