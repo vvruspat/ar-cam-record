@@ -33,7 +33,6 @@ class ARManager: NSObject, ObservableObject {
     var imageHeight: Int = 2160
     var startAnimation = 1
     var videoWriter: VideoWriter?
-    var lidarWriter: VideoWriter?
 
     var filename = "ar-captured"
 
@@ -56,7 +55,6 @@ class ARManager: NSObject, ObservableObject {
     @Published var orientation = InterfaceOrientation.landscapeRight
     
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
-    @AppStorage(SettingsKeys.recordLidar) var recordLidar = false
     
     override init() {
         arView = ARView(frame: .zero)
@@ -150,19 +148,8 @@ class ARManager: NSObject, ObservableObject {
         videoWriter?.height = imageHeight
         videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
         
-        lidarWriter = VideoWriter()
-        lidarWriter?.queueLabel = "lidar.recording"
-        lidarWriter?.frameTime = Double(1.0 / self.fps)
-        lidarWriter?.width = imageWidth
-        lidarWriter?.height = imageHeight
-        lidarWriter?.url = self.getTmpPathToSave("\(self.filename)-lidar.mov")
-        
         DispatchQueue.global(qos: .background).async {
             self.videoWriter?.start(self.orientation == InterfaceOrientation.landscapeRight ? false : true)
-            
-            if self.recordLidar {
-                self.lidarWriter?.start()
-            }
         }
     }
     
@@ -188,7 +175,6 @@ class ARManager: NSObject, ObservableObject {
         selectedFloorPlane = nil
         
         videoWriter = nil
-        lidarWriter = nil
         
         isFloorDetected = false
         distance = 0.0
@@ -212,6 +198,7 @@ class ARManager: NSObject, ObservableObject {
 
         isRecording = true
         
+
         videoWriter?.startAudioRecording()
 
         onboardingManager.goToStep(step: .recording)
@@ -221,13 +208,11 @@ class ARManager: NSObject, ObservableObject {
         isRecording = false
         
         videoWriter?.complete()
-        
-        if recordLidar {
-            lidarWriter?.complete()
-        }
-        
+
         saveSCNFileToDisk()
         onboardingManager.goToStep(step: nil)
+        
+        reset()
     }
     
     func toggleRecord() {
@@ -344,18 +329,6 @@ class ARManager: NSObject, ObservableObject {
     func finalizeSave() {
         let folderToMove = createAppFolder()
         
-        // Move usda
-//        if let tmpPath = getTmpPathToSave("\(self.filename).usda"),
-//           let path = getPathToSave("\(self.filename).usda", folder: folderToMove) {
-//            moveFile(from: tmpPath, to: path)
-//        }
-        
-//        // Move ae script
-//        if let tmpPath = getTmpPathToSave("\(self.filename).ae.js"),
-//           let path = getPathToSave("\(self.filename).ae.js", folder: folderToMove) {
-//            moveFile(from: tmpPath, to: path)
-//        }
-
         // Move python script
         if let tmpPath = getTmpPathToSave("\(self.filename).blender.py"),
            let path = getPathToSave("\(self.filename).blender.py", folder: folderToMove) {
@@ -365,12 +338,6 @@ class ARManager: NSObject, ObservableObject {
         // Move Video
         if let path = getPathToSave("\(self.filename).mov", folder: folderToMove),
            let tmpPath = videoWriter?.url {
-            moveFile(from: tmpPath, to: path)
-        }
-        
-        // Move LiDAR
-        if let path = getPathToSave("\(self.filename)-lidar.mov", folder: folderToMove),
-           let tmpPath = lidarWriter?.url {
             moveFile(from: tmpPath, to: path)
         }
 
@@ -449,27 +416,6 @@ extension ARManager : ARSessionDelegate {
             updateCameraTransform(frame)
             // recording video
             videoWriter?.submit(pixelBuffer: frame.capturedImage)
-            
-            if recordLidar {
-                // recording LiDAR video
-                if let depthMap = frame.sceneDepth?.depthMap {
-                    let dataImage = CIImage(cvPixelBuffer: depthMap)
-                    var pixelBuffer: CVPixelBuffer?
-                    
-                    if self.pixelBufferCreateFromImage(ciImage: dataImage, outBuffer: &pixelBuffer) == kCVReturnSuccess {
-                        
-                        if pixelBuffer != nil {
-                            lidarWriter?.submit(pixelBuffer: pixelBuffer!)
-                        } else {
-                            print("Empty pixel buffer")
-                        }
-                    } else {
-                        print("Failed to convert depth data")
-                    }
-                } else {
-                    print("Nothing to record from LiDAR")
-                }
-            }
             
             recordingTime = frame.timestamp;
         } else {

@@ -9,7 +9,6 @@ import Foundation
 
 struct SettingsKeys {
     static let showLidar = "showLidar"
-    static let recordLidar = "recordLidar"
     static let showHorizon = "showHorizon"
     static let showCrosshair = "showCrosshair"
 }
