@@ -8,21 +8,27 @@
 import SwiftUI
 
 struct RecordOnboarding: View {
+    var orientation: InterfaceOrientation
+
     var body: some View {
-        VStack(alignment: .trailing) {
-            Spacer()
-            HStack() {
+        VStack(alignment: .center) {
+            if (orientation == .landscapeRight) {
+                Spacer()
+            }
+            
+            HStack(alignment: .center) {
                 Spacer()
                 Text("Now you can start recording video and camera movements")
-                Image(systemName: "arrow.up.forward")
-            }.foregroundStyle(Color("OnboardingTextColor"))
-                .padding(.top, 100.0)
-            Spacer()
+                Spacer()
+            }.padding(.bottom, 0.0).foregroundStyle(Color("OnboardingTextColor"))
+            
+            if (orientation != .landscapeRight) {
+                Spacer()
+            }
         }
-        
     }
 }
 
 #Preview {
-    RecordOnboarding()
+    RecordOnboarding(orientation: .landscapeRight)
 }

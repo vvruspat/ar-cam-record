@@ -10,22 +10,21 @@ import SwiftUI
 struct OnboardingView: View {
     @ObservedObject var onboardingManager = OnboardingManager.shared
     
+    @EnvironmentObject var manager: ARManager
+    
     var body: some View {
-        GeometryReader { geometry in
-            ZStack() {
-                switch onboardingManager.currentStep {
-                case .anchor: AnchorOnboarding()
-                case .move: MoveOnboarding()
-                case .floor: FloorOnboarding()
-                case .record: RecordOnboarding()
-                case .recording: RecordingOnboarding()
-                case .none: SuccessOnboarding()
-                }
+        ZStack() {
+            switch onboardingManager.currentStep {
+            case .anchor: AnchorOnboarding(orientation: manager.orientation)
+            case .move: MoveOnboarding(orientation: manager.orientation)
+            case .floor: FloorOnboarding(orientation: manager.orientation)
+            case .record: RecordOnboarding(orientation: manager.orientation)
+            case .recording: RecordingOnboarding(orientation: manager.orientation)
+            case .none: SuccessOnboarding(orientation: manager.orientation)
             }
-            .frame(width: geometry.size.width - 120, height: geometry.size.height - 44)
-            .padding(.horizontal, 60.0)
-            .padding(.vertical, 24.0)
         }
+        .padding(.horizontal, manager.orientation == InterfaceOrientation.portrait ? 60.0 : 0.0)
+        .padding(.vertical, 24.0)
     }
 }
 

@@ -7,6 +7,7 @@
 
 import AVFoundation
 import Foundation
+import Accelerate
 
 public class VideoWriter: NSObject, ObservableObject {
     @Published public var latestPixelBuffer: CVPixelBuffer? = nil
@@ -101,7 +102,7 @@ public class VideoWriter: NSObject, ObservableObject {
         }
     }
 
-    public func start() {
+    public func start(_ isVertical: Bool = false) {
         precondition(width % 2 == 0)
         precondition(height % 2 == 0)
         precondition(url != nil)
@@ -115,10 +116,14 @@ public class VideoWriter: NSObject, ObservableObject {
         let videoSettings: [String:Any] = [
             AVVideoCodecKey: AVVideoCodecType.hevc,
             AVVideoWidthKey: NSNumber(value: width),
-            AVVideoHeightKey: NSNumber(value:height),
+            AVVideoHeightKey: NSNumber(value: height),
         ]
 
         writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
+        
+        if (isVertical) {
+            writerInput.transform = CGAffineTransform(rotationAngle: CGFloat(CGFloat.pi / 2))
+        }
         
         let audioOutputSettings = [
             AVFormatIDKey : kAudioFormatMPEG4AAC,
@@ -165,7 +170,6 @@ public class VideoWriter: NSObject, ObservableObject {
             }
         })
         
-        startAudioRecording()
     }
      
     func startAudioRecording() {
@@ -191,7 +195,9 @@ public class VideoWriter: NSObject, ObservableObject {
                     self.captureSession!.addOutput(self.audioOutput!)
                     self.audioOutput?.setSampleBufferDelegate(self, queue: DispatchQueue.global());
                     
-                    self.captureSession?.startRunning();
+                    DispatchQueue.global(qos: .background).async {
+                        self.captureSession?.startRunning()
+                    }
                 }
                 
             }

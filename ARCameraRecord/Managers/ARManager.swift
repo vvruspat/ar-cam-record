@@ -21,12 +21,16 @@ class ARManager: NSObject, ObservableObject {
     
     var arView: ARView
     var cameraTransforms = MDLTransform()
+    var startTransform: matrix_float4x4?
+    var startRotation: simd_float3?
+    var startTime: TimeInterval?
     var anchors: [simd_float4x4] = []
     var timer: Timer?
     var counter = 0
-    var timeStart: TimeInterval?
 
     var fps: Float = 30.0
+    var imageWidth: Int = 3840
+    var imageHeight: Int = 2160
     var startAnimation = 1
     var videoWriter: VideoWriter?
 
@@ -48,6 +52,8 @@ class ARManager: NSObject, ObservableObject {
     @Published var recordingStartTime = 0.0
     @Published var recordingTime = 0.0
     
+    @Published var orientation = InterfaceOrientation.landscapeRight
+    
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
     
     override init() {
@@ -56,7 +62,7 @@ class ARManager: NSObject, ObservableObject {
         super.init()
         
         UserDefaults.standard.addObserver(self, forKeyPath: SettingsKeys.showLidar, options: .new, context: nil)
-        
+        setOrientation(InterfaceOrientation.landscapeRight)
         setup()
     }
     
@@ -64,9 +70,17 @@ class ARManager: NSObject, ObservableObject {
         UserDefaults.standard.removeObserver(self, forKeyPath: SettingsKeys.showLidar)
     }
     
+    func setOrientation(_ orient: InterfaceOrientation) {
+        orientation = orient
+        AppDelegate.orientationLock = orient == InterfaceOrientation.portrait ? UIInterfaceOrientationMask.portrait : UIInterfaceOrientationMask.landscapeRight
+        
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+                windowScene.keyWindow?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
+    }
+    
     func setup() {
         arView.session.pause()
-        
+                        
         arView.automaticallyConfigureSession = false
         
         sceneToSave.rootNode.position = SCNVector3(0, 0, 0)
@@ -102,13 +116,41 @@ class ARManager: NSObject, ObservableObject {
             arView.debugOptions.insert(.showSceneUnderstanding)
         }
 
+        imageWidth = Int(arView.session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
+        imageHeight = Int(arView.session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
+        
+        setupVideoWriter()
+        
         arView.session.delegate = self
         
         arView.session.run(config, options: [.resetTracking, .resetSceneReconstruction, .removeExistingAnchors])
         
+        if let anchorEntity = try? Entity.loadAnchor(named: "axis") {
+
+            let position: SIMD3<Float> = SIMD3(x: 0.0, y: 0.0, z: 0.0)
+            
+            anchorEntity.setPosition(position, relativeTo: nil)
+        }
+        
         fps = Float(config.videoFormat.framesPerSecond)
         
         onboardingManager.goToStep(step: .move)
+    }
+    
+    func setupVideoWriter() {
+        
+        self.filename = "ar-captured-\(Int(Date.now.timeIntervalSince1970))"
+        
+        videoWriter = VideoWriter()
+        videoWriter?.frameTime = Double(1.0 / self.fps)
+        
+        videoWriter?.width = imageWidth
+        videoWriter?.height = imageHeight
+        videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
+        
+        DispatchQueue.global(qos: .background).async {
+            self.videoWriter?.start(self.orientation == InterfaceOrientation.landscapeRight ? false : true)
+        }
     }
     
     func reset() {
@@ -117,7 +159,9 @@ class ARManager: NSObject, ObservableObject {
         anchors.removeAll()
         cameraTransforms = MDLTransform()
         counter = 0
-        timeStart = nil
+        startTime = nil
+        startTransform = nil
+        startRotation = nil
         recordingTime = 0.0
         recordingStartTime = 0.0
 
@@ -129,6 +173,8 @@ class ARManager: NSObject, ObservableObject {
         
         highlightedPlane = nil
         selectedFloorPlane = nil
+        
+        videoWriter = nil
         
         isFloorDetected = false
         distance = 0.0
@@ -144,42 +190,36 @@ class ARManager: NSObject, ObservableObject {
         }
     }
     
-    func record () async {
+    func startRecording () {
+        addStartFrameToCameraTransform()
+        startAnimation = self.cameraTransforms.keyTimes.count
+        recordingTime = 0.0
+        recordingStartTime = arView.session.currentFrame?.timestamp ?? 0.0
+
+        isRecording = true
         
-        let session = await self.arView.session
-        
-        self.filename = "ar-captured-\(Int(Date.now.timeIntervalSince1970))"
-        
-        videoWriter = VideoWriter()
-        videoWriter?.frameTime = Double(1.0 / self.fps)
-        videoWriter?.width = Int(session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
-        videoWriter?.height = Int(session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
-        videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
-        videoWriter?.start()
-        
-        DispatchQueue.main.async {
-            self.startAnimation = self.cameraTransforms.keyTimes.count
-            self.recordingTime = 0.0
-            self.recordingStartTime = session.currentFrame?.timestamp ?? 0.0
-            self.isRecording = true
-            self.onboardingManager.goToStep(step: .recording)
-        }
+
+        videoWriter?.startAudioRecording()
+
+        onboardingManager.goToStep(step: .recording)
     }
     
     func stopRecording() {
-        self.isRecording = false
+        isRecording = false
+        
         videoWriter?.complete()
-        self.saveSCNFileToDisk()
-        self.onboardingManager.goToStep(step: nil)
+
+        saveSCNFileToDisk()
+        onboardingManager.goToStep(step: nil)
+        
+        reset()
     }
     
     func toggleRecord() {
-        Task {
-            if (isRecording) {
-                self.stopRecording()
-            } else {
-                await self.record()
-            }
+        if (isRecording) {
+            stopRecording()
+        } else {
+            startRecording()
         }
     }
     
@@ -245,7 +285,7 @@ class ARManager: NSObject, ObservableObject {
         ]
         
         if let path = getTmpPathToSave("\(self.filename).blender.py") {
-            sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps, videoFileName: "\(self.filename).mov")
+            sceneToSave.writeToBlenderPy(url: path, animation: animation, fps: self.fps, isVertical: orientation != InterfaceOrientation.landscapeRight, videoFileName: "\(self.filename).mov")
         }
 
         finalizeSave()
@@ -340,14 +380,33 @@ class ARManager: NSObject, ObservableObject {
         }
     }
     
-    func updateCameraTransform(_ frame: ARFrame) {
+    func updateCameraTransform(_ frame: ARFrame, _ updateStart: Bool = false) {
         let transform = frame.camera.transform
         let rotation = frame.camera.eulerAngles
         let position = transform.columns.3
         let elapsedTime = frame.timestamp
         
-        cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
-        cameraTransforms.setRotation(rotation, forTime: elapsedTime)
+        if (updateStart) {
+            startTime = elapsedTime
+            startTransform = transform
+            startRotation = rotation
+        } else {
+            cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
+            cameraTransforms.setRotation(rotation, forTime: elapsedTime)
+        }
+    }
+    
+    func addStartFrameToCameraTransform() {
+        if (startTransform != nil && startTime != nil && startRotation != nil) {
+            let transform = startTransform
+            let rotation = startRotation!
+            let position = transform!.columns.3
+            let elapsedTime = startTime!
+            
+            cameraTransforms.setTranslation(position[SIMD3(0,1,2)], forTime: elapsedTime)
+            cameraTransforms.setRotation(rotation, forTime: elapsedTime)
+        }
+
     }
 }
 
@@ -360,7 +419,7 @@ extension ARManager : ARSessionDelegate {
             
             recordingTime = frame.timestamp;
         } else {
-            updateCameraTransform(frame)
+            updateCameraTransform(frame, true)
         }
         
         highlightFloorPlane()

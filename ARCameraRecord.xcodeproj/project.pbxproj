@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18607A52995342A6B950A687 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 5C7C53E16A894A41A6D42175 /* Sentry */; };
+		5E1EA4582B810A84008A3803 /* RotateButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1EA4572B810A84008A3803 /* RotateButtonView.swift */; };
+		5E1EA45A2B811849008A3803 /* VerticalControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1EA4592B811849008A3803 /* VerticalControlsView.swift */; };
 		5E2A0F882ACCA867005BA504 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F872ACCA867005BA504 /* SettingsView.swift */; };
 		5E2A0F8A2ACCB93E005BA504 /* SettingsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */; };
 		5E2A0F8F2ACD583E005BA504 /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */; };
@@ -84,6 +87,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E1EA4572B810A84008A3803 /* RotateButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateButtonView.swift; sourceTree = "<group>"; };
+		5E1EA4592B811849008A3803 /* VerticalControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalControlsView.swift; sourceTree = "<group>"; };
 		5E2A0F872ACCA867005BA504 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButtonView.swift; sourceTree = "<group>"; };
 		5E2A0F8E2ACD583E005BA504 /* SettingsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeys.swift; sourceTree = "<group>"; };
@@ -155,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18607A52995342A6B950A687 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +246,7 @@
 				5EFA6BB52B28672C0000C470 /* Onboarding */,
 				5EC40F6D2AC9B9FA000C94E9 /* CrosshairButtonView.swift */,
 				5EC40F702AC9BA56000C94E9 /* ControlsView.swift */,
+				5E1EA4592B811849008A3803 /* VerticalControlsView.swift */,
 				5EC40F722AC9BAA3000C94E9 /* RecordButtonView.swift */,
 				5EC40F742AC9BAED000C94E9 /* AddAnchorButtonView.swift */,
 				5E2A0F892ACCB93E005BA504 /* SettingsButtonView.swift */,
@@ -250,6 +257,7 @@
 				5EFA6BB32B285A6D0000C470 /* OnboardingView.swift */,
 				5EAA15CB2B34CD1F00126327 /* ResetAllButtonView.swift */,
 				5E7FB9442B40A03F00598CE6 /* RecordTimeView.swift */,
+				5E1EA4572B810A84008A3803 /* RotateButtonView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -370,6 +378,7 @@
 				F3C3AEAF2A73CB0300F354F9 /* Frameworks */,
 				F3C3AEB02A73CB0300F354F9 /* Resources */,
 				5E37B9AA2AF700C500851434 /* Embed Foundation Extensions */,
+				06A5A13EEE2640838095DABF /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -377,6 +386,7 @@
 			);
 			name = ARCameraRecord;
 			packageProductDependencies = (
+				5C7C53E16A894A41A6D42175 /* Sentry */,
 			);
 			productName = ARCamRecord;
 			productReference = F3C3AEB22A73CB0300F354F9 /* ARCameraRecord.app */;
@@ -407,6 +417,7 @@
 			);
 			mainGroup = F3C3AEA92A73CB0300F354F9;
 			packageReferences = (
+				564C99E5D88E498B8215E00F /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = F3C3AEB32A73CB0300F354F9 /* Products */;
 			projectDirPath = "";
@@ -431,11 +442,30 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		06A5A13EEE2640838095DABF /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script is responsable to upload debug symbols and source context for Sentry.\nif which sentry-cli >/dev/null; then\nexport SENTRY_ORG=alexander-cd\nexport SENTRY_PROJECT=apple-ios\nERROR=$(sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F3C3AEAE2A73CB0300F354F9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E1EA4582B810A84008A3803 /* RotateButtonView.swift in Sources */,
 				5E37B9B82AFA89D000851434 /* ResetFloorSelectionButtonView.swift in Sources */,
 				5E37B9BC2B051BC100851434 /* SCNNode.blender.extension.swift in Sources */,
 				5EC40F6B2AC92A87000C94E9 /* VideoWriter.swift in Sources */,
@@ -461,6 +491,7 @@
 				5E37B9C82B057AC900851434 /* SIMD3.blender.extension.swift in Sources */,
 				5EC40F8D2ACC4E7D000C94E9 /* SCNGeometry.extension.swift in Sources */,
 				5ECB90002ABFB42000F9DF4D /* ARManager.swift in Sources */,
+				5E1EA45A2B811849008A3803 /* VerticalControlsView.swift in Sources */,
 				5E37B9C62B057A4C00851434 /* BlenderPyUtils.swift in Sources */,
 				5E37B9D42B0A955600851434 /* SCNScene.ae.extension.swift in Sources */,
 				F3C3AEB82A73CB0300F354F9 /* ContentView.swift in Sources */,
@@ -631,6 +662,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"ARCameraRecord/Preview Content\"";
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
@@ -647,19 +679,21 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = antillia.ARCameraRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -676,6 +710,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"ARCameraRecord/Preview Content\"";
 				DEVELOPMENT_TEAM = 3WKK5AGY66;
 				ENABLE_PREVIEWS = YES;
@@ -692,19 +727,21 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = Launch.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = antillia.ARCameraRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -733,6 +770,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		564C99E5D88E498B8215E00F /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5C7C53E16A894A41A6D42175 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 564C99E5D88E498B8215E00F /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F3C3AEAA2A73CB0300F354F9 /* Project object */;
 }
