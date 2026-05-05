@@ -14,7 +14,7 @@ public class VideoWriter: NSObject, ObservableObject {
 
     var width: Int = 400
     var height: Int = 400
-    
+
     var queueLabel = "video.recording"
 
     var frameTime: Double = 1.0 {
@@ -31,19 +31,19 @@ public class VideoWriter: NSObject, ObservableObject {
     var writerSemaphore: DispatchSemaphore
     var pixelFormatType = kCVPixelFormatType_32BGRA
 
-    var writer: AVAssetWriter!
-    var writerInput: AVAssetWriterInput!
-    var audioInput: AVAssetWriterInput!
-    var writerAdaptor: AVAssetWriterInputPixelBufferAdaptor!
-
-    var writerObservation: NSKeyValueObservation!
+    private var writer: AVAssetWriter?
+    private var writerInput: AVAssetWriterInput?
+    private var audioInput: AVAssetWriterInput?
+    private var writerAdaptor: AVAssetWriterInputPixelBufferAdaptor?
+    private var writerObservation: NSKeyValueObservation?
+    private var isSessionStarted = false
 
     var currentFrameTime = CMTime(seconds: 0.0, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
 
     var captureSession: AVCaptureSession?
     var micInput: AVCaptureDeviceInput?
     var audioOutput: AVCaptureAudioDataOutput?
-    
+
     public override init() {
         writerQueue = DispatchQueue(label: queueLabel)
         writerCondition = NSCondition()
@@ -52,6 +52,10 @@ public class VideoWriter: NSObject, ObservableObject {
     }
 
     public func complete() {
+        guard let writerInput = writerInput, let writer = writer, isSessionStarted else { return }
+
+        isSessionStarted = false
+
         writerQueue.sync {
             writerInput.markAsFinished()
         }
@@ -60,8 +64,8 @@ public class VideoWriter: NSObject, ObservableObject {
         var complete = false
 
         writer.finishWriting {
-            if self.writer.status == .failed {
-                let message = self.writer.error?.localizedDescription ?? "UNKNOWN"
+            if writer.status == .failed {
+                let message = writer.error?.localizedDescription ?? "UNKNOWN"
                 print("Failed to finish writing: \(message)")
             }
 
@@ -79,40 +83,48 @@ public class VideoWriter: NSObject, ObservableObject {
 
         condition.unlock()
 
-        writerObservation.invalidate()
+        writerObservation?.invalidate()
         endAudioRecording()
     }
-    
+
     func submit(pixelBuffer: CVPixelBuffer) {
+        guard isSessionStarted, let writerAdaptor = writerAdaptor, let writerInput = writerInput else { return }
+
         writerSemaphore.wait()
 
         writerQueue.async {
             self.writerCondition.lock()
 
-            while !self.writerInput.isReadyForMoreMediaData {
+            while !writerInput.isReadyForMoreMediaData {
                 self.writerCondition.wait()
             }
-            
+
             self.writerCondition.unlock()
-            
-            self.writerAdaptor.append(pixelBuffer, withPresentationTime: self.currentFrameTime)
+
+            writerAdaptor.append(pixelBuffer, withPresentationTime: self.currentFrameTime)
             self.currentFrameTime = CMTimeAdd(self.currentFrameTime, self.frameRate)
-            
+
             self.writerSemaphore.signal()
         }
     }
 
     public func start(_ isVertical: Bool = false) {
-        precondition(width % 2 == 0)
-        precondition(height % 2 == 0)
-        precondition(url != nil)
-        
-        if FileManager.default.fileExists(atPath: url!.path) {
-            try! FileManager.default.removeItem(at: url!)
+        guard width > 0, height > 0, width % 2 == 0, height % 2 == 0, let url = url else {
+            print("VideoWriter: Invalid configuration - width: \(width), height: \(height), url: \(String(describing: url))")
+            return
         }
 
-        writer = try! AVAssetWriter(url: url!, fileType: .mov)
-        
+        if FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(at: url)
+        }
+
+        do {
+            writer = try AVAssetWriter(url: url, fileType: .mov)
+        } catch {
+            print("Failed to create AVAssetWriter: \(error.localizedDescription)")
+            return
+        }
+
         let videoSettings: [String:Any] = [
             AVVideoCodecKey: AVVideoCodecType.hevc,
             AVVideoWidthKey: NSNumber(value: width),
@@ -120,42 +132,49 @@ public class VideoWriter: NSObject, ObservableObject {
         ]
 
         writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
-        
-        if (isVertical) {
-            writerInput.transform = CGAffineTransform(rotationAngle: CGFloat(CGFloat.pi / 2))
+
+        if isVertical {
+            writerInput?.transform = CGAffineTransform(rotationAngle: CGFloat(CGFloat.pi / 2))
         }
-        
+
         let audioOutputSettings = [
             AVFormatIDKey : kAudioFormatMPEG4AAC,
             AVNumberOfChannelsKey : 2,
             AVSampleRateKey : 44100.0,
             AVEncoderBitRateKey: 192000
             ] as [String : Any]
-        
-        audioInput = AVAssetWriterInput(mediaType: AVMediaType.audio, outputSettings: audioOutputSettings);
-        audioInput.expectsMediaDataInRealTime = true
-        
+
+        audioInput = AVAssetWriterInput(mediaType: AVMediaType.audio, outputSettings: audioOutputSettings)
+        audioInput?.expectsMediaDataInRealTime = true
+
         let sourceAttributes: [String:Any] = [
             String(kCVPixelBufferPixelFormatTypeKey): NSNumber(value: pixelFormatType),
             String(kCVPixelBufferMetalCompatibilityKey) : NSNumber(value: true)
         ]
 
+        guard let writerInput = writerInput else { return }
+
         writerAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: sourceAttributes)
+
+        guard let writer = writer, let audioInput = audioInput else { return }
 
         if writer.canAdd(writerInput) {
             writer.add(writerInput)
-            writer.add(audioInput);
+            writer.add(audioInput)
         } else {
-            fatalError("Could not add writer input")
+            print("Could not add writer inputs")
+            return
         }
 
         guard writer.startWriting() else {
             let message = writer.error?.localizedDescription ?? "UNKNOWN"
-            fatalError("Could not start writing: \(message)")
+            print("Could not start writing: \(message)")
+            return
         }
-        
+
         writer.startSession(atSourceTime: currentFrameTime)
-        
+        isSessionStarted = true
+
         writerSemaphore = DispatchSemaphore(value: backPressure)
 
         writerObservation = writerInput.observe(\.isReadyForMoreMediaData, options: .new, changeHandler: { (_, change) in
@@ -169,67 +188,76 @@ public class VideoWriter: NSObject, ObservableObject {
                 self.writerCondition.unlock()
             }
         })
-        
+
     }
-     
+
     func startAudioRecording() {
         var microphone: AVCaptureDevice?
-        
+
         if #available(iOS 17.0, *) {
             microphone = AVCaptureDevice.default(.microphone, for: AVMediaType.audio, position: .unspecified)
         } else {
             microphone = AVCaptureDevice.default(.builtInMicrophone, for: AVMediaType.audio, position: .unspecified)
         }
-        
+
+        guard let microphone = microphone else { return }
+
         do {
-            try self.micInput = AVCaptureDeviceInput(device: microphone!);
-            
-            self.captureSession = AVCaptureSession();
-            
-            if (self.captureSession?.canAddInput(self.micInput!))! {
-                self.captureSession?.addInput(self.micInput!);
-                
-                self.audioOutput = AVCaptureAudioDataOutput();
-                
-                if self.captureSession!.canAddOutput(self.audioOutput!){
-                    self.captureSession!.addOutput(self.audioOutput!)
-                    self.audioOutput?.setSampleBufferDelegate(self, queue: DispatchQueue.global());
-                    
+            self.micInput = try AVCaptureDeviceInput(device: microphone)
+
+            self.captureSession = AVCaptureSession()
+
+            guard let captureSession = self.captureSession, let micInput = self.micInput else { return }
+
+            if captureSession.canAddInput(micInput) {
+                captureSession.addInput(micInput)
+
+                self.audioOutput = AVCaptureAudioDataOutput()
+
+                if let audioOutput = self.audioOutput, captureSession.canAddOutput(audioOutput) {
+                    captureSession.addOutput(audioOutput)
+                    audioOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global())
+
                     DispatchQueue.global(qos: .background).async {
-                        self.captureSession?.startRunning()
+                        captureSession.startRunning()
                     }
                 }
-                
+
             }
         }
         catch {
             print("Failed to start audio session \(error.localizedDescription)")
         }
     }
-    
+
     func endAudioRecording() {
-        captureSession!.stopRunning();
+        captureSession?.stopRunning()
     }
 
 }
 
 extension VideoWriter: AVCaptureAudioDataOutputSampleBufferDelegate {
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard isSessionStarted,
+              let writer = writer, writer.status == .writing,
+              let audioInput = audioInput, audioInput.isReadyForMoreMediaData else { return }
+
         var count: CMItemCount = 0
-        CMSampleBufferGetSampleTimingInfoArray(sampleBuffer, entryCount: 0, arrayToFill: nil, entriesNeededOut: &count);
+        CMSampleBufferGetSampleTimingInfoArray(sampleBuffer, entryCount: 0, arrayToFill: nil, entriesNeededOut: &count)
         var info = [CMSampleTimingInfo](repeating: CMSampleTimingInfo(duration: CMTimeMake(value: 0, timescale: 0), presentationTimeStamp: CMTimeMake(value: 0, timescale: 0), decodeTimeStamp: CMTimeMake(value: 0, timescale: 0)), count: count)
-        CMSampleBufferGetSampleTimingInfoArray(sampleBuffer, entryCount: count, arrayToFill: &info, entriesNeededOut: &count);
-        
+        CMSampleBufferGetSampleTimingInfoArray(sampleBuffer, entryCount: count, arrayToFill: &info, entriesNeededOut: &count)
+
         for i in 0..<count {
             info[i].decodeTimeStamp = self.currentFrameTime
             info[i].presentationTimeStamp = self.currentFrameTime
         }
 
         var soundbuffer: CMSampleBuffer?
-        
-        CMSampleBufferCreateCopyWithNewTiming(allocator: kCFAllocatorDefault, sampleBuffer: sampleBuffer, sampleTimingEntryCount: count, sampleTimingArray: &info, sampleBufferOut: &soundbuffer);
-        
 
-        audioInput.append(soundbuffer!);
+        CMSampleBufferCreateCopyWithNewTiming(allocator: kCFAllocatorDefault, sampleBuffer: sampleBuffer, sampleTimingEntryCount: count, sampleTimingArray: &info, sampleBufferOut: &soundbuffer)
+
+        if let soundbuffer = soundbuffer {
+            audioInput.append(soundbuffer)
+        }
     }
 }

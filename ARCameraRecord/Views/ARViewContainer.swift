@@ -11,6 +11,7 @@ struct ARViewContainer: UIViewRepresentable {
     @EnvironmentObject var manager: ARManager
 
     func makeUIView(context: Context) -> some UIView {
+        manager.ensureSetup()
         return manager.arView
     }
 
