@@ -33,10 +33,11 @@ class PlaneAnchorEntity: Entity, HasModel, HasAnchoring {
     private func createModelComponent(_ arPlaneAnchor: ARPlaneAnchor) -> ModelComponent {
         let mesh = MeshResource.generatePlane(width: arPlaneAnchor.planeExtent.width, depth: arPlaneAnchor.planeExtent.height)
         var material = UnlitMaterial(color: .green.withAlphaComponent(0.5))
-        
+
         material.color = try! .init(tint: .white.withAlphaComponent(0.999),
                                  texture: .init(.load(named: "PlaneTexture")))
-        
+        material.blending = .transparent(opacity: .init(floatLiteral: 1.0))
+
         let modelComponent = ModelComponent(mesh: mesh, materials: [material])
         
         return modelComponent
@@ -68,10 +69,11 @@ class PlaneAnchorEntity: Entity, HasModel, HasAnchoring {
     
     func setTexture(_ name: String) {
         var material = UnlitMaterial(color: .white.withAlphaComponent(0.5))
-        
+
         material.color = try! .init(tint: .white.withAlphaComponent(0.999),
                                  texture: .init(.load(named: name)))
-        
+        material.blending = .transparent(opacity: .init(floatLiteral: 1.0))
+
         self.model?.materials = [material]
     }
 }
