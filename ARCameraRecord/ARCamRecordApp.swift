@@ -8,7 +8,6 @@
 import SwiftUI
 import Sentry
 
-
 @main
 struct ARCamRecordApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

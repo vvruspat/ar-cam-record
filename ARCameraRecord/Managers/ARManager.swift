@@ -19,7 +19,8 @@ class ARManager: NSObject, ObservableObject {
     
     var onboardingManager = OnboardingManager.shared
     
-    var arView: ARView
+    lazy var arView = ARView(frame: .zero)
+    private var isSetupComplete = false
     var cameraTransforms = MDLTransform()
     var startTransform: matrix_float4x4?
     var startRotation: simd_float3?
@@ -40,29 +41,32 @@ class ARManager: NSObject, ObservableObject {
     var cameraNode = SCNNode()
     let config = ARWorldTrackingConfiguration()
     var planeDetection = false
-    
+
     var highlightedPlane: UUID?
     var selectedFloorPlane: UUID?
 
     let supportLidar = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
-    
+
     @Published var isRecording = false
     @Published var isFloorDetected = false
     @Published var distance = 0.0
     @Published var recordingStartTime = 0.0
     @Published var recordingTime = 0.0
-    
+
     @Published var orientation = InterfaceOrientation.landscapeRight
-    
+
     @AppStorage(SettingsKeys.showLidar) var showLidar = false
-    
+
     override init() {
-        arView = ARView(frame: .zero)
-        
         super.init()
-        
+
         UserDefaults.standard.addObserver(self, forKeyPath: SettingsKeys.showLidar, options: .new, context: nil)
         setOrientation(InterfaceOrientation.landscapeRight)
+    }
+
+    func ensureSetup() {
+        guard !isSetupComplete else { return }
+        isSetupComplete = true
         setup()
     }
     
@@ -116,8 +120,15 @@ class ARManager: NSObject, ObservableObject {
             arView.debugOptions.insert(.showSceneUnderstanding)
         }
 
-        imageWidth = Int(arView.session.configuration?.videoFormat.imageResolution.width ?? 3840.0)
-        imageHeight = Int(arView.session.configuration?.videoFormat.imageResolution.height ?? 2160.0)
+        imageWidth = Int(config.videoFormat.imageResolution.width)
+        imageHeight = Int(config.videoFormat.imageResolution.height)
+
+        if imageWidth <= 0 || imageHeight <= 0 {
+            imageWidth = 3840
+            imageHeight = 2160
+        }
+        if imageWidth % 2 != 0 { imageWidth -= 1 }
+        if imageHeight % 2 != 0 { imageHeight -= 1 }
         
         setupVideoWriter()
         
@@ -148,9 +159,7 @@ class ARManager: NSObject, ObservableObject {
         videoWriter?.height = imageHeight
         videoWriter?.url = self.getTmpPathToSave("\(self.filename).mov")
         
-        DispatchQueue.global(qos: .background).async {
-            self.videoWriter?.start(self.orientation == InterfaceOrientation.landscapeRight ? false : true)
-        }
+        videoWriter?.start(orientation == InterfaceOrientation.landscapeRight ? false : true)
     }
     
     func reset() {
